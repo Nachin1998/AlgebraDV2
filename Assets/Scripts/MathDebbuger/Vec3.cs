@@ -129,7 +129,8 @@ namespace CustomMath
         }
         public static float Angle(Vec3 from, Vec3 to)
         {
-            throw new NotImplementedException();
+            return Mathf.Acos(Dot(from, to) / (from.magnitude * to.magnitude)) * Mathf.Rad2Deg; 
+            //Arcoseno de producto punto entre ambos vectores sobre la magnitud de ambos vectores multiplicadas FUA
         }
         public static Vec3 ClampMagnitude(Vec3 vector, float maxLength)
         {
@@ -137,19 +138,25 @@ namespace CustomMath
         }
         public static float Magnitude(Vec3 vector)
         {
-            throw new NotImplementedException();
+            return vector.magnitude;
         }
         public static Vec3 Cross(Vec3 a, Vec3 b)
         {
-            throw new NotImplementedException();
+            return new Vec3((a.y * b.z) - (b.y * a.z), 
+                            (a.z * b.x) - (b.z * a.x), 
+                            (a.x * b.y) - (b.x * a.y));
         }
         public static float Distance(Vec3 a, Vec3 b)
         {
-            throw new NotImplementedException();
+            return Mathf.Sqrt((a.x - b.x) * (a.x - b.x) + 
+                              (a.y - b.y) * (a.y - b.y) + 
+                              (a.z - b.z) * (a.z - b.z));
         }
         public static float Dot(Vec3 a, Vec3 b)
         {
-            throw new NotImplementedException();
+            return (a.x * b.x) + 
+                   (a.y * b.y) + 
+                   (a.z * b.z);
         }
         public static Vec3 Lerp(Vec3 a, Vec3 b, float t)
         {
@@ -161,15 +168,29 @@ namespace CustomMath
         }
         public static Vec3 Max(Vec3 a, Vec3 b)
         {
-            throw new NotImplementedException();
+            Vec3 auxVec;
+            if (a.x > b.x) auxVec.x = a.x;
+            else auxVec.x = b.x;
+            if (a.y > b.y) auxVec.y = a.y;
+            else auxVec.y = b.y;
+            if (a.z > b.z) auxVec.z = a.z;
+            else auxVec.z = b.z;
+            return auxVec;
         }
         public static Vec3 Min(Vec3 a, Vec3 b)
         {
-            throw new NotImplementedException();
+            Vec3 auxVec;
+            if (a.x < b.x) auxVec.x = a.x;
+            else auxVec.x = b.x;
+            if (a.y < b.y) auxVec.y = a.y;
+            else auxVec.y = b.y;
+            if (a.z < b.z) auxVec.z = a.z;
+            else auxVec.z = b.z;
+            return auxVec;
         }
         public static float SqrMagnitude(Vec3 vector)
         {
-            throw new NotImplementedException();
+            return vector.sqrMagnitude;
         }
         public static Vec3 Project(Vec3 vector, Vec3 onNormal) 
         {
@@ -181,15 +202,21 @@ namespace CustomMath
         }
         public void Set(float newX, float newY, float newZ)
         {
-            throw new NotImplementedException();
+            this.x = newX;
+            this.y = newY;
+            this.z = newZ;
         }
         public void Scale(Vec3 scale)
         {
-            throw new NotImplementedException();
+            this.x = x * scale.x;
+            this.y = y * scale.y;
+            this.z = z * scale.z;
         }
         public void Normalize()
         {
-            throw new NotImplementedException();
+            this.x = x / magnitude;
+            this.y = y / magnitude;
+            this.z = z / magnitude;
         }
         #endregion
 
