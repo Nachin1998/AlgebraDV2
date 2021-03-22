@@ -73,11 +73,10 @@ namespace CustomMath
         #region Operators
         public static bool operator ==(Vec3 left, Vec3 right)
         {
-            float diff_x = left.x - right.x;
-            float diff_y = left.y - right.y;
-            float diff_z = left.z - right.z;
-            float sqrmag = diff_x * diff_x + diff_y * diff_y + diff_z * diff_z;
-            return sqrmag < epsilon * epsilon;
+            bool equalsX = left.x == right.x;
+            bool equalsY = left.y == right.y;
+            bool equalsZ = left.z == right.z;
+            return (equalsX && equalsY && equalsZ);
         }
         public static bool operator !=(Vec3 left, Vec3 right)
         {
@@ -91,25 +90,25 @@ namespace CustomMath
 
         public static Vec3 operator -(Vec3 leftV3, Vec3 rightV3)
         {
-            throw new NotImplementedException();
+            return new Vec3(leftV3.x - rightV3.x, leftV3.y - rightV3.y, leftV3.z - rightV3.z);
         }
 
         public static Vec3 operator -(Vec3 v3)
         {
-            throw new NotImplementedException();
+            return new Vec3(-v3.x, -v3.y, -v3.z);
         }
 
         public static Vec3 operator *(Vec3 v3, float scalar)
         {
-            throw new NotImplementedException();
+            return new Vec3(v3.x * scalar, v3.y * scalar, v3.z * scalar);
         }
         public static Vec3 operator *(float scalar, Vec3 v3)
         {
-            throw new NotImplementedException();
+            return new Vec3(scalar * v3.x, scalar * v3.y, scalar * v3.z);
         }
         public static Vec3 operator /(Vec3 v3, float scalar)
         {
-            throw new NotImplementedException();
+            return new Vec3(v3.x / scalar, v3.y / scalar, v3.z / scalar);
         }
 
         public static implicit operator Vector3(Vec3 v3)
@@ -119,7 +118,7 @@ namespace CustomMath
 
         public static implicit operator Vector2(Vec3 v2)
         {
-            throw new NotImplementedException();
+            return new Vector2(v2.x, v2.y);
         }
         #endregion
 
