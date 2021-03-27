@@ -25,11 +25,11 @@ public class Tester : MonoBehaviour
         a = new Vec3(A);
         b = new Vec3(B);
 
-        Vector3 value = Vector3.Reflect(A, B);
-        Debug.Log("1 " + value);
+        Vector3 value = Vector3.ClampMagnitude(A, 50);
+        Debug.Log("1: " + value);
 
-        Vec3 value2 = Vec3.Reflect(a, b);
-        Debug.Log("2 " + value2);
+        Vec3 value2 = Vec3.ClampMagnitude(a, 50);
+        Debug.Log("2: " + value2);
     }
 
     void Update()
