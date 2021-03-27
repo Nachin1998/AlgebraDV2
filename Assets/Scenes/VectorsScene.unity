@@ -242,7 +242,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5899b3b1fa657b44810154516827330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cringe: {x: 10, y: 5, z: -2}
+  showMainTest: 0
+  TEST_VEC: {x: 0, y: 0, z: 0}
+  A: {x: 5, y: 5, z: 5}
+  B: {x: 10, y: 10, z: 10}
 --- !u!4 &503643719
 Transform:
   m_ObjectHideFlags: 0

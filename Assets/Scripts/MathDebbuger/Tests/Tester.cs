@@ -5,42 +5,48 @@ using MathDebbuger;
 using CustomMath;
 public class Tester : MonoBehaviour
 {
+    public bool showMainTest = false;
+    [Space]
     public Vector3 TEST_VEC;
     [Space]
     public Vector3 A;
     public Vector3 B;
-    Vec3 testVec;
 
-    Vec3 a;
-    Vec3 b;
+    private Vec3 testVec;
+    private Vec3 a;
+    private Vec3 b;
+
+    float timer = 0;
     void Start()
     {
-        //InitMainTest();
+        if(showMainTest) InitMainTest();
 
         testVec = new Vec3(TEST_VEC);
         a = new Vec3(A);
         b = new Vec3(B);
-        
-        Vector3 value = Vector3.Min(A, B);
+
+        Vector3 value = Vector3.Reflect(A, B);
         Debug.Log("1 " + value);
 
-        Vec3 value2 = Vec3.Min(a, b);
+        Vec3 value2 = Vec3.Reflect(a, b);
         Debug.Log("2 " + value2);
     }
 
     void Update()
     {
+        timer += Time.deltaTime;
+
         if (Input.GetKeyDown(KeyCode.L))
         {
             StartCoroutine(UpdateBlueVector());
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
-            Vector3Debugger.TurnOffVector("elAzul");
+            Vector3Debugger.TurnOffVector("Blue");
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
-            Vector3Debugger.TurnOnVector("elAzul");
+            Vector3Debugger.TurnOnVector("Blue");
         }
     }
 
@@ -54,18 +60,18 @@ public class Tester : MonoBehaviour
         Vector3Debugger.AddVectorsSecuence(vectors, false, Color.red, "secuencia");
         Vector3Debugger.EnableEditorView("secuencia");
         
-        Vector3Debugger.AddVector(new Vector3(10, 10, 0), Color.blue, "elAzul");
-        Vector3Debugger.EnableEditorView("elAzul");
+        Vector3Debugger.AddVector(new Vector3(10, 10, 0), Color.blue, "Blue");
+        Vector3Debugger.EnableEditorView("Blue");
 
-        Vector3Debugger.AddVector(Vector3.down * 7, Color.green, "elVerde");
-        Vector3Debugger.EnableEditorView("elVerde");
+        Vector3Debugger.AddVector(Vector3.down * 7, Color.green, "Green");
+        Vector3Debugger.EnableEditorView("Green");
     }
 
     IEnumerator UpdateBlueVector()
     {
         for (int i = 0; i < 100; i++)
         {
-            Vector3Debugger.UpdatePosition("elAzul", new Vector3(2.4f, 6.3f, 0.5f) * (i * 0.05f));
+            Vector3Debugger.UpdatePosition("Blue", new Vector3(2.4f, 6.3f, 0.5f) * (i * 0.05f));
             yield return new WaitForSeconds(0.2f);
         }
     }

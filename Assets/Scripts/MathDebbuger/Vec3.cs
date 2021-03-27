@@ -160,11 +160,12 @@ namespace CustomMath
         }
         public static Vec3 Lerp(Vec3 a, Vec3 b, float t)
         {
-            throw new NotImplementedException();
+            float aux = Mathf.Clamp(t, 0, 1);
+            return a + new Vec3((b - a) * aux);
         }
         public static Vec3 LerpUnclamped(Vec3 a, Vec3 b, float t)
         {
-            throw new NotImplementedException();
+            return a + new Vec3((b - a) * t);
         }
         public static Vec3 Max(Vec3 a, Vec3 b)
         {
@@ -192,13 +193,13 @@ namespace CustomMath
         {
             return vector.sqrMagnitude;
         }
-        public static Vec3 Project(Vec3 vector, Vec3 onNormal) 
+        public static Vec3 Project(Vec3 vector, Vec3 onNormal)
         {
             throw new NotImplementedException();
         }
-        public static Vec3 Reflect(Vec3 inDirection, Vec3 inNormal) 
+        public static Vec3 Reflect(Vec3 inDirection, Vec3 inNormal)
         {
-            throw new NotImplementedException();
+            return inDirection - 2 * (Dot(inDirection, inNormal)) * inNormal;
         }
         public void Set(float newX, float newY, float newZ)
         {
@@ -231,7 +232,6 @@ namespace CustomMath
         {
             return x == other.x && y == other.y && z == other.z;
         }
-
         public override int GetHashCode()
         {
             return x.GetHashCode() ^ (y.GetHashCode() << 2) ^ (z.GetHashCode() >> 2);
