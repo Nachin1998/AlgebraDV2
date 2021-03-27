@@ -244,8 +244,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showMainTest: 0
   TEST_VEC: {x: 0, y: 0, z: 0}
-  A: {x: 80, y: 80, z: 80}
-  B: {x: 120, y: 120, z: 120}
+  A: {x: 1, y: 1, z: 1}
+  B: {x: -2, y: -2, z: 2}
 --- !u!4 &503643719
 Transform:
   m_ObjectHideFlags: 0

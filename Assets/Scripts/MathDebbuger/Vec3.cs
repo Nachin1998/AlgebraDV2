@@ -200,7 +200,7 @@ namespace CustomMath
         }
         public static Vec3 Reflect(Vec3 inDirection, Vec3 inNormal)
         {
-            return inDirection - 2 * (Dot(inDirection, inNormal)) * inNormal;
+            return inDirection - (2 * Dot(inDirection, inNormal) * inNormal);
         }
         public void Set(float newX, float newY, float newZ)
         {
