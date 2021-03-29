@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 namespace CustomMath
 {
+    [System.Serializable]
     public struct Vec3 : IEquatable<Vec3>
     {
         #region Variables
@@ -196,7 +197,7 @@ namespace CustomMath
         }
         public static Vec3 Project(Vec3 vector, Vec3 onNormal)
         {
-            throw new NotImplementedException();
+            return (Dot(vector, onNormal) / (onNormal.magnitude * onNormal.magnitude)) * onNormal;
         }
         public static Vec3 Reflect(Vec3 inDirection, Vec3 inNormal)
         {

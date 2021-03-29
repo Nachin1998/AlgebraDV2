@@ -22,21 +22,20 @@ public class Tester : MonoBehaviour
     {
         if(showMainTest) InitMainTest();
 
-        a = new Vec3(A);
-        b = new Vec3(B);
         value = Vector3.Reflect(A, B);
         value2 = Vec3.Reflect(a, b);
 
-        Vector3Debugger.AddVector(Vector3.zero, A, Color.blue, "Blue");
-        Vector3Debugger.EnableEditorView("Blue");
+        Vector3Debugger.AddVector(Vector3.zero, A, Color.blue, "Test Blue");
+        Vector3Debugger.EnableEditorView("Test Blue");
 
-        Vector3Debugger.AddVector(Vector3.zero, B, Color.green, "Green");
-        Vector3Debugger.EnableEditorView("Green");
+        Vector3Debugger.AddVector(Vector3.zero, B, Color.green, "Test Green");
+        Vector3Debugger.EnableEditorView("Test Green");
 
-        Vector3Debugger.AddVector(Vector3.zero, new Vector3(value2.x, value2.y, value2.z).normalized, Color.red, "Red");
-        Vector3Debugger.EnableEditorView("Red");
+        Vector3Debugger.AddVector(Vector3.zero, value2, Color.red, "Test Red");
+        Vector3Debugger.EnableEditorView("Test Red");
 
         Debug.Log("1: " + value);
+        Debug.Log("2: " + value2);
     }
 
     void Update()
@@ -45,11 +44,11 @@ public class Tester : MonoBehaviour
         a = new Vec3(A);
         b = new Vec3(B);
 
-        value2 = Vec3.Reflect(a, b);
+        //value2 = Vec3.Reflect(a, b);
 
-        Vector3Debugger.UpdatePosition("Blue", A);
-        Vector3Debugger.UpdatePosition("Green", B);
-        Vector3Debugger.UpdatePosition("Red", new Vector3(value2.x, value2.y, value2.z).normalized);
+        //Vector3Debugger.UpdatePosition("Blue", A);
+        //Vector3Debugger.UpdatePosition("Green", B);
+        //Vector3Debugger.UpdatePosition("Red", new Vector3(value2.x, value2.y, value2.z).normalized);
 
         Inputs();
     }
@@ -75,17 +74,17 @@ public class Tester : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Vector3Debugger.SetVectorState("Blue", !Vector3Debugger.IsVectorActive("Blue"));
+            Vector3Debugger.SetVectorState("Test Blue", !Vector3Debugger.IsVectorActive("Test Blue"));
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Vector3Debugger.SetVectorState("Green", !Vector3Debugger.IsVectorActive("Green"));
+            Vector3Debugger.SetVectorState("Test Green", !Vector3Debugger.IsVectorActive("Test Green"));
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            Vector3Debugger.SetVectorState("Red", !Vector3Debugger.IsVectorActive("Red"));
+            Vector3Debugger.SetVectorState("Test Red", !Vector3Debugger.IsVectorActive("Test Red"));
         }
     }
 }

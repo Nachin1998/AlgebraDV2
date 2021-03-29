@@ -229,7 +229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &503643718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,8 +243,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showMainTest: 0
-  A: {x: 2, y: 3, z: 0}
-  B: {x: 8, y: 1, z: 0}
+  A: {x: 7, y: 4, z: 1}
+  B: {x: 5, y: -5, z: 3}
 --- !u!4 &503643719
 Transform:
   m_ObjectHideFlags: 0
@@ -342,3 +342,66 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1063576929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1063576931}
+  - component: {fileID: 1063576930}
+  - component: {fileID: 1063576932}
+  m_Layer: 0
+  m_Name: Exercises Vec3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1063576930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063576929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 642327099, guid: 8f0a7c37088d64041ab5f96b2abdf93b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ejercicio: 9
+  vectorColor: {r: 1, g: 0, b: 0, a: 1}
+  a: {x: 15, y: 0, z: 0}
+  b: {x: 0, y: 15, z: 0}
+--- !u!4 &1063576931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063576929}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 19.363197, y: 3.2949853, z: -1.0411625}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1063576932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063576929}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4395bfdaee311bf499e2711fe833af59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  excersice: 9
+  A: {x: 15, y: 0, z: 0}
+  B: {x: 0, y: 15, z: 0}
