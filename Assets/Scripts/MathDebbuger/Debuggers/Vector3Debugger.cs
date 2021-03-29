@@ -209,5 +209,19 @@ namespace MathDebbuger
             if (ExistKey(identifier))
                 debuggers[identifier].enabled = true;
         }
+        public static void SetVectorState(string identifier, bool state)
+        {
+            if (ExistKey(identifier))
+                debuggers[identifier].enabled = state;
+        }
+        public static bool IsVectorActive(string identifier)
+        {
+            if (ExistKey(identifier))
+                return debuggers[identifier].enabled;
+            else
+            {
+                throw new System.NotImplementedException("Identifier /" + identifier + " does not exist");
+            }
+        }
     }
 }
