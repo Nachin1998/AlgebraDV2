@@ -22,13 +22,16 @@ public class Tester : MonoBehaviour
     {
         if(showMainTest) InitMainTest();
 
-        value = Vector3.Reflect(A, B);
-        value2 = Vec3.Reflect(a, b);
+        a = new Vec3(A);
+        b = new Vec3(B);
 
-        Vector3Debugger.AddVector(Vector3.zero, A, Color.blue, "Test Blue");
+        value = Vector3.Project(A, B).normalized;
+        value2 = Vec3.Project(a, b).normalized;
+
+        Vector3Debugger.AddVector(Vector3.zero, a, Color.blue, "Test Blue");
         Vector3Debugger.EnableEditorView("Test Blue");
 
-        Vector3Debugger.AddVector(Vector3.zero, B, Color.green, "Test Green");
+        Vector3Debugger.AddVector(Vector3.zero, b, Color.green, "Test Green");
         Vector3Debugger.EnableEditorView("Test Green");
 
         Vector3Debugger.AddVector(Vector3.zero, value2, Color.red, "Test Red");
@@ -45,10 +48,17 @@ public class Tester : MonoBehaviour
         b = new Vec3(B);
 
         //value2 = Vec3.Reflect(a, b);
+        value = Vector3.Reflect(A, B);
+        value2 = Vec3.Reflect(a, b);
+        Vector3Debugger.UpdatePosition("Test Blue", a);
+        Vector3Debugger.UpdatePosition("Test Green", b);
+        Vector3Debugger.UpdatePosition("Test Red", value2);
 
-        //Vector3Debugger.UpdatePosition("Blue", A);
-        //Vector3Debugger.UpdatePosition("Green", B);
-        //Vector3Debugger.UpdatePosition("Red", new Vector3(value2.x, value2.y, value2.z).normalized);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("1: " + value);
+            Debug.Log("2: " + value2);
+        }
 
         Inputs();
     }
