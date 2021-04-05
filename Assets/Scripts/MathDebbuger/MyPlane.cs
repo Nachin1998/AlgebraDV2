@@ -10,7 +10,7 @@ namespace CustomMath
     public struct MyPlane
     {
 
-        public MyPlane(Vector3 inNormal, Vector3 inPoint)
+        public MyPlane(Vec3 inNormal, Vec3 inPoint)
         {
             //
             // Resumen:
@@ -23,7 +23,7 @@ namespace CustomMath
             throw new NotImplementedException();
         }
 
-        public MyPlane(Vector3 inNormal, float d)
+        public MyPlane(Vec3 inNormal, float d)
         {
             //
             // Resumen:
@@ -36,7 +36,7 @@ namespace CustomMath
             throw new NotImplementedException();
         }
 
-        public MyPlane(Vector3 a, Vector3 b, Vector3 c)
+        public MyPlane(Vec3 a, Vec3 b, Vec3 c)
         {
             //
             // Resumen:
@@ -54,7 +54,7 @@ namespace CustomMath
         //
         // Resumen:
         //     Normal vector of the plane.
-        public Vector3 normal { get; set; }
+        public Vec3 normal { get; set; }
         //
         // Resumen:
         //     The distance measured from the Plane to the origin, along the Plane's normal.
@@ -65,7 +65,7 @@ namespace CustomMath
         public Plane flipped { get; }
 
 
-        public static MyPlane Translate(MyPlane plane, Vector3 translation)
+        public static MyPlane Translate(MyPlane plane, Vec3 translation)
         {
             //
             // Resumen:
@@ -83,7 +83,7 @@ namespace CustomMath
             throw new NotImplementedException();
         }
 
-        public Vector3 ClosestPointOnPlane(Vector3 point)
+        public Vec3 ClosestPointOnPlane(Vec3 point)
         {
             //
             // Resumen:
@@ -106,7 +106,7 @@ namespace CustomMath
             throw new NotImplementedException();
         }
 
-        public float GetDistanceToPoint(Vector3 point)
+        public float GetDistanceToPoint(Vec3 point)
         {
             //
             // Resumen:
@@ -117,7 +117,7 @@ namespace CustomMath
             throw new NotImplementedException();
         }
 
-        public bool GetSide(Vector3 point)
+        public bool GetSide(Vec3 point)
         {
             //
             // Resumen:
@@ -128,7 +128,7 @@ namespace CustomMath
             throw new NotImplementedException();
         }
 
-        public bool SameSide(Vector3 inPt0, Vector3 inPt1)
+        public bool SameSide(Vec3 inPt0, Vec3 inPt1)
         {
             //
             // Resumen:
@@ -141,7 +141,7 @@ namespace CustomMath
             throw new NotImplementedException();
         }
 
-        public void Set3Points(Vector3 a, Vector3 b, Vector3 c)
+        public void Set3Points(Vec3 a, Vec3 b, Vec3 c)
         {
             //
             // Resumen:
@@ -160,7 +160,7 @@ namespace CustomMath
             throw new NotImplementedException();
         }
 
-        public void SetNormalAndPosition(Vector3 inNormal, Vector3 inPoint)
+        public void SetNormalAndPosition(Vec3 inNormal, Vec3 inPoint)
         {
             //
             // Resumen:
@@ -184,7 +184,7 @@ namespace CustomMath
             throw new NotImplementedException();
         }
 
-        public void Translate(Vector3 translation)
+        public void Translate(Vec3 translation)
         {
             //
             // Resumen:
