@@ -12,15 +12,8 @@ namespace CustomMath
 
         public MyPlane(Vec3 inNormal, Vec3 inPoint)
         {
-            //
-            // Resumen:
-            //     Creates a plane.
-            //
-            // Parámetros:
-            //   inNormal:
-            //
-            //   inPoint:
-            throw new NotImplementedException();
+            normal = inNormal.normalized;
+            distance = -Vec3.Dot(normal, inPoint);
         }
 
         public MyPlane(Vec3 inNormal, float d)
@@ -38,17 +31,12 @@ namespace CustomMath
 
         public MyPlane(Vec3 a, Vec3 b, Vec3 c)
         {
-            //
-            // Resumen:
-            //     Creates a plane.
-            //
-            // Parámetros:
-            //   a:
-            //
-            //   b:
-            //
-            //   c:
-            throw new NotImplementedException();
+            Vec3 side1 = b - a;
+            Vec3 side2 = c - a;
+
+            normal = Vec3.Cross(side1, side2).normalized;
+
+            distance = -Vec3.Dot(normal, a);
         }
 
         //
@@ -62,7 +50,7 @@ namespace CustomMath
         //
         // Resumen:
         //     Returns a copy of the plane that faces in the opposite direction.
-        public Plane flipped { get; }
+        public MyPlane flipped { get { return new MyPlane(-normal, -normal * distance); } }
 
 
         public static MyPlane Translate(MyPlane plane, Vec3 translation)
