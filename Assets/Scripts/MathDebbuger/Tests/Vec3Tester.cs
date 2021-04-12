@@ -17,7 +17,6 @@ public class Vec3Tester : MonoBehaviour
     private Vec3 b;
     private Vec3 value2;
 
-    float timer = 0;
     void Start()
     {
         if(showMainTest) InitMainTest();
