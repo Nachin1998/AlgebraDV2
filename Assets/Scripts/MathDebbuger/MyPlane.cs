@@ -55,7 +55,11 @@ namespace CustomMath
 
         public bool GetSide(Vec3 point)
         {
-            throw new NotImplementedException();
+            if ((Vec3.Dot(normal, point) + distance) > 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public bool SameSide(Vec3 inPt0, Vec3 inPt1)
