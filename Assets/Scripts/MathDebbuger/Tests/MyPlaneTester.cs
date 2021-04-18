@@ -7,20 +7,37 @@ public class MyPlaneTester : MonoBehaviour
     private enum EXCERSICE
     {
         HOUSE,
-        FRUSTRUM
+        FRUSTRUM,
+        VERTEX
     }
     [SerializeField] private EXCERSICE excersice;
+
     [SerializeField] private GameObject cube;
+    private MeshFilter mf;
+    private Vector3[] vertices;
+    private List<GameObject> VerticesObj = new List<GameObject>();
 
     [SerializeField] private List<GameObject> walls = new List<GameObject>();
-    [SerializeField] private List<Plane> planes = new List<Plane>();
-
     private List<MeshRenderer> mrs = new List<MeshRenderer>();
-    Camera cam;
-    [SerializeField] private Plane[] extraPlanes;
+    private List<Plane> planes = new List<Plane>();
+
+    private Camera cam;
+    private Plane[] frustrumPlanes;
 
     void Start()
     {
+        mf = cube.GetComponent<MeshFilter>();
+        vertices = mf.mesh.vertices;
+
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            go.transform.position = vertices[i] + cube.transform.position;
+            go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            go.transform.SetParent(cube.transform);
+            VerticesObj.Add(go);
+        }
+
         for (int i = 0; i < walls.Count; i++)
         {
             planes.Add(new Plane(walls[i].transform.up, walls[i].transform.position));
@@ -28,7 +45,7 @@ public class MyPlaneTester : MonoBehaviour
         }
 
         cam = Camera.main;
-        extraPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
+        frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
     }
 
 
@@ -40,30 +57,53 @@ public class MyPlaneTester : MonoBehaviour
 
                 for (int i = 0; i < planes.Count; i++)
                 {
-                    CheckPlanes(planes[i], i);
+                    CheckPlanes(planes[i], i, cube.transform.position, cube.transform.localScale.x / 2);
                 }
                 break;
 
             case EXCERSICE.FRUSTRUM:
 
-                extraPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
+                frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
 
-                for (int i = 0; i < extraPlanes.Length; i++)
+                for (int i = 0; i < frustrumPlanes.Length; i++)
                 {
-                    CheckPlanes(extraPlanes[i], i);
+                    CheckPlanes(frustrumPlanes[i], i, cube.transform.position, cube.transform.localScale.x / 2);
                 }
                 break;
 
-            default:
+            case EXCERSICE.VERTEX:
+
+                for (int i = 0; i < VerticesObj.Count; i++)
+                {
+                    VerticesObj[i].transform.position = vertices[i] + cube.transform.position;
+                }
+
+                for (int i = 0; i < planes.Count; i++)
+                {
+                    for (int j = 0; j < vertices.Length; j++)
+                    {
+                         CheckPlanes(planes[i], i, vertices[j] + cube.transform.position);
+                    }
+                }
                 break;
         }
     }
 
-    void CheckPlanes(Plane plane, int matIndex)
+    void CheckPlanes(Plane plane, int matIndex, Vector3 point)
+    {
+        if (plane.GetSide(point))
+        {
+            mrs[matIndex].material.color = Color.green;
+            return;
+        }
+        mrs[matIndex].material.color = Color.red;
+    }
+
+    void CheckPlanes(Plane plane, int matIndex, Vector3 point, float distanceCheck)
     {
         if (plane.GetSide(cube.transform.position))
         {
-            if (plane.GetDistanceToPoint(cube.transform.position) >= cube.transform.localScale.x / 2)
+            if (plane.GetDistanceToPoint(point) >= distanceCheck)
             {
                 mrs[matIndex].material.color = Color.green;
             }
