@@ -78,12 +78,17 @@ namespace CustomMath
 
         public void Set3Points(Vec3 a, Vec3 b, Vec3 c)
         {
-            throw new NotImplementedException();
+            Vec3 side1 = b - a;
+            Vec3 side2 = c - a;
+
+            normal = Vec3.Cross(side1, side2).normalized;
+            distance = -Vec3.Dot(normal, a);
         }
 
         public void SetNormalAndPosition(Vec3 inNormal, Vec3 inPoint)
         {
-            throw new NotImplementedException();
+            normal = inNormal.normalized;
+            distance = -Vec3.Dot(inNormal, inPoint);
         }
         public override string ToString()
         {

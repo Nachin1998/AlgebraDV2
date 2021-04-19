@@ -7,8 +7,7 @@ public class MyPlaneTester : MonoBehaviour
     private enum EXCERSICE
     {
         HOUSE,
-        FRUSTRUM,
-        VERTEX
+        FRUSTRUM
     }
     [SerializeField] private EXCERSICE excersice;
 
@@ -31,14 +30,7 @@ public class MyPlaneTester : MonoBehaviour
         mf = cube.GetComponent<MeshFilter>();
         vertices = mf.mesh.vertices;
 
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            go.transform.position = vertices[i] + cube.transform.position;
-            go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-            go.transform.SetParent(cube.transform);
-            VerticesObj.Add(go);
-        }
+        InitVertices();
 
         for (int i = 0; i < walls.Count; i++)
         {
@@ -57,6 +49,7 @@ public class MyPlaneTester : MonoBehaviour
         {
             case EXCERSICE.HOUSE:
 
+                mr.enabled = true;
                 CheckPlanes(planes, cube.transform.position, cube.transform.localScale.x / 2);
 
                 break;
@@ -65,22 +58,31 @@ public class MyPlaneTester : MonoBehaviour
 
                 frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
 
-                CheckFustrum(frustrumPlanes, cube.transform.position, cube.transform.localScale.x / 2);
-
-                break;
-
-            case EXCERSICE.VERTEX:
-
-                for (int i = 0; i < VerticesObj.Count; i++)
+                if (CheckFustrum(planes, vertices))
                 {
-                    VerticesObj[i].transform.position = vertices[i] + cube.transform.position;
+                    mr.enabled = true;
                 }
-                for (int i = 0; i < vertices.Length; i++)
+                else
                 {
-                    CheckPlanes(planes, vertices[i] + cube.transform.position);
+                    mr.enabled = false;
                 }
 
                 break;
+
+
+        }
+    }
+
+    void InitVertices()
+    {
+        for (int i = 0; i < vertices.Length / 3; i++)
+        {
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            go.name = "Vertex " + i;
+            go.transform.position = vertices[i] + cube.transform.position;
+            go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            go.transform.SetParent(cube.transform);
+            VerticesObj.Add(go);
         }
     }
 
@@ -117,21 +119,50 @@ public class MyPlaneTester : MonoBehaviour
         }
     }
 
-    void CheckFustrum(Plane[] planesArray, Vector3 point, float distanceCheck)
+    bool CheckFustrum(List<Plane> planes, Vector3[] vertices)
     {
-        for (int i = 0; i < planesArray.Length; i++)
+        mrs[0].material.color = Color.green;
+        mrs[1].material.color = Color.red;
+        mrs[2].material.color = Color.blue;
+        mrs[3].material.color = Color.black;
+        mrs[4].material.color = Color.yellow;
+        mrs[5].material.color = Color.magenta;
+
+        for (int j = 0; j < vertices.Length; j++)
         {
-            if (planesArray[i].GetSide(cube.transform.position))
+            if (planes[0].GetSide(vertices[j] + cube.transform.position))
             {
-                if (planesArray[i].GetDistanceToPoint(point) >= distanceCheck)
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool CheckNewPlanes(List<Plane> planesList, Vector3 point)
+    {
+        for (int i = 0; i < planesList.Count; i++)
+        {
+            if (!planesList[i].GetSide(point))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool CheckVertices(Vector3[] vertices, List<Plane> frustrumPlanes)
+    {
+        for (int i = 0; i < frustrumPlanes.Count; i++)
+        {
+            for (int j = 0; j < vertices.Length; j++)
+            {
+                if (frustrumPlanes[i].GetSide(vertices[j]))
                 {
-                    mr.enabled = true;
-                }
-                else
-                {
-                    mr.enabled = false;
+                    return false;
                 }
             }
         }
+        return true;
     }
 }
