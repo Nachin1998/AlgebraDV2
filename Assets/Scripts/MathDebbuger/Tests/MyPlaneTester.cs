@@ -13,6 +13,7 @@ public class MyPlaneTester : MonoBehaviour
     [SerializeField] private EXCERSICE excersice;
 
     [SerializeField] private GameObject cube;
+    private MeshRenderer mr;
     private MeshFilter mf;
     private Vector3[] vertices;
     private List<GameObject> VerticesObj = new List<GameObject>();
@@ -26,6 +27,7 @@ public class MyPlaneTester : MonoBehaviour
 
     void Start()
     {
+        mr = cube.GetComponent<MeshRenderer>();
         mf = cube.GetComponent<MeshFilter>();
         vertices = mf.mesh.vertices;
 
@@ -55,20 +57,16 @@ public class MyPlaneTester : MonoBehaviour
         {
             case EXCERSICE.HOUSE:
 
-                for (int i = 0; i < planes.Count; i++)
-                {
-                    CheckPlanes(planes[i], i, cube.transform.position, cube.transform.localScale.x / 2);
-                }
+                CheckPlanes(planes, cube.transform.position, cube.transform.localScale.x / 2);
+
                 break;
 
             case EXCERSICE.FRUSTRUM:
 
                 frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
 
-                for (int i = 0; i < frustrumPlanes.Length; i++)
-                {
-                    CheckPlanes(frustrumPlanes[i], i, cube.transform.position, cube.transform.localScale.x / 2);
-                }
+                CheckFustrum(frustrumPlanes, cube.transform.position, cube.transform.localScale.x / 2);
+
                 break;
 
             case EXCERSICE.VERTEX:
@@ -77,39 +75,62 @@ public class MyPlaneTester : MonoBehaviour
                 {
                     VerticesObj[i].transform.position = vertices[i] + cube.transform.position;
                 }
-
-                for (int i = 0; i < planes.Count; i++)
+                for (int i = 0; i < vertices.Length; i++)
                 {
-                    for (int j = 0; j < vertices.Length; j++)
-                    {
-                         CheckPlanes(planes[i], i, vertices[j] + cube.transform.position);
-                    }
+                    CheckPlanes(planes, vertices[i] + cube.transform.position);
                 }
+
                 break;
         }
     }
 
-    void CheckPlanes(Plane plane, int matIndex, Vector3 point)
+    void CheckPlanes(List<Plane> planesList, Vector3 point)
     {
-        if (plane.GetSide(point))
+        for (int i = 0; i < planesList.Count; i++)
         {
-            mrs[matIndex].material.color = Color.green;
-            return;
-        }
-        mrs[matIndex].material.color = Color.red;
-    }
-
-    void CheckPlanes(Plane plane, int matIndex, Vector3 point, float distanceCheck)
-    {
-        if (plane.GetSide(cube.transform.position))
-        {
-            if (plane.GetDistanceToPoint(point) >= distanceCheck)
+            if (planesList[i].GetSide(point))
             {
-                mrs[matIndex].material.color = Color.green;
+                mrs[i].material.color = Color.green;
             }
             else
             {
-                mrs[matIndex].material.color = Color.red;
+                mrs[i].material.color = Color.red;
+            }
+        }
+    }
+
+    void CheckPlanes(List<Plane> planesList, Vector3 point, float distanceCheck)
+    {
+        for (int i = 0; i < planesList.Count; i++)
+        {
+            if (planesList[i].GetSide(cube.transform.position))
+            {
+                if (planesList[i].GetDistanceToPoint(point) >= distanceCheck)
+                {
+                    mrs[i].material.color = Color.green;
+                }
+                else
+                {
+                    mrs[i].material.color = Color.red;
+                }
+            }
+        }
+    }
+
+    void CheckFustrum(Plane[] planesArray, Vector3 point, float distanceCheck)
+    {
+        for (int i = 0; i < planesArray.Length; i++)
+        {
+            if (planesArray[i].GetSide(cube.transform.position))
+            {
+                if (planesArray[i].GetDistanceToPoint(point) >= distanceCheck)
+                {
+                    mr.enabled = true;
+                }
+                else
+                {
+                    mr.enabled = false;
+                }
             }
         }
     }

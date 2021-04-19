@@ -7,9 +7,12 @@ namespace CustomMath
     public struct MyPlane : IEquatable<Plane>
     {
         #region Variables
-        public Vec3 normal { get; set; }
-        public float distance { get; set; }
-        public MyPlane flipped { get { return new MyPlane(-normal, -normal * distance); } }
+        Vec3 normal;
+        float distance;
+
+        public Vec3 Normal { get { return normal; } set { normal = value; } }
+        public float Distance { get { return distance; } set { distance = value; } }
+        public MyPlane Flipped { get { return new MyPlane(-normal, -normal * distance); } }
         #endregion
 
 
@@ -26,8 +29,13 @@ namespace CustomMath
             Vec3 side2 = c - a;
 
             normal = Vec3.Cross(side1, side2).normalized;
-
             distance = -Vec3.Dot(normal, a);
+        }
+
+        public MyPlane(Plane plane)
+        {
+            normal = new Vec3(plane.normal);
+            distance = plane.distance;
         }
         #endregion
 
@@ -45,7 +53,8 @@ namespace CustomMath
 
         public void Flip()
         {
-            throw new NotImplementedException();
+            normal = -normal;
+            distance = -distance;
         }
 
         public float GetDistanceToPoint(Vec3 point)
@@ -55,7 +64,7 @@ namespace CustomMath
 
         public bool GetSide(Vec3 point)
         {
-            if ((Vec3.Dot(normal, point) + distance) > 0)
+            if ((Vec3.Dot(normal, point) + distance) > 0f)
             {
                 return true;
             }

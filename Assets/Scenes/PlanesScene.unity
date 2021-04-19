@@ -340,8 +340,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   excersice: 2
   cube: {fileID: 688955851}
-  mf: {fileID: 0}
-  verticesObj: []
   walls:
   - {fileID: 1986347429}
   - {fileID: 153714656}
