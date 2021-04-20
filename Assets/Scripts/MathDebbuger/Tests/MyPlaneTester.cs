@@ -6,8 +6,9 @@ public class MyPlaneTester : MonoBehaviour
 {
     private enum EXCERSICE
     {
-        HOUSE,
-        FRUSTRUM
+        INSIDE_HOUSE,
+        OUTSIDE_HOUSE,
+        FRUSTRUM_CULLING
     }
     [SerializeField] private EXCERSICE excersice;
 
@@ -21,8 +22,12 @@ public class MyPlaneTester : MonoBehaviour
     private List<MeshRenderer> mrs = new List<MeshRenderer>();
     private List<Plane> planes = new List<Plane>();
 
+    [SerializeField] private LayerMask occludees;
+    private List<GameObject> objectsToOcclude = new List<GameObject>();
+
     private Camera cam;
     private Plane[] frustrumPlanes;
+
 
     void Start()
     {
@@ -38,6 +43,8 @@ public class MyPlaneTester : MonoBehaviour
             mrs.Add(walls[i].GetComponent<MeshRenderer>());
         }
 
+
+
         cam = Camera.main;
         frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
     }
@@ -47,29 +54,59 @@ public class MyPlaneTester : MonoBehaviour
     {
         switch (excersice)
         {
-            case EXCERSICE.HOUSE:
+            case EXCERSICE.INSIDE_HOUSE:
 
                 mr.enabled = true;
-                CheckPlanes(planes, cube.transform.position, cube.transform.localScale.x / 2);
+                for (int i = 0; i < planes.Count; i++)
+                {
+                    if (IsBoxInside(planes[i]))
+                    {
+                        mrs[i].material.color = Color.green;
+                    }
+                    else
+                    {
+                        mrs[i].material.color = Color.red;
+                    }
+                }
 
                 break;
 
-            case EXCERSICE.FRUSTRUM:
+            case EXCERSICE.OUTSIDE_HOUSE:
+
+                mr.enabled = true;
+                for (int i = 0; i < planes.Count; i++)
+                {
+                    if (IsBoxOutside(planes[i]))
+                    {
+                        mrs[i].material.color = Color.green;
+                    }
+                    else
+                    {
+                        mrs[i].material.color = Color.red;
+                    }
+                }
+
+                break;
+
+            case EXCERSICE.FRUSTRUM_CULLING:
 
                 frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
 
-                if (CheckFustrum(planes, vertices))
-                {
-                    mr.enabled = true;
-                }
-                else
+                if (IsBoxOutside(frustrumPlanes[0]) ||
+                    IsBoxOutside(frustrumPlanes[1]) ||
+                    IsBoxOutside(frustrumPlanes[2]) ||
+                    IsBoxOutside(frustrumPlanes[3]) ||
+                    IsBoxOutside(frustrumPlanes[4]) ||
+                    IsBoxOutside(frustrumPlanes[5]))
                 {
                     mr.enabled = false;
                 }
+                else
+                {
+                    mr.enabled = true;
+                }
 
                 break;
-
-
         }
     }
 
@@ -86,64 +123,11 @@ public class MyPlaneTester : MonoBehaviour
         }
     }
 
-    void CheckPlanes(List<Plane> planesList, Vector3 point)
+    bool IsBoxInside(Plane plane)
     {
-        for (int i = 0; i < planesList.Count; i++)
+        for (int i = 0; i < vertices.Length; i++)
         {
-            if (planesList[i].GetSide(point))
-            {
-                mrs[i].material.color = Color.green;
-            }
-            else
-            {
-                mrs[i].material.color = Color.red;
-            }
-        }
-    }
-
-    void CheckPlanes(List<Plane> planesList, Vector3 point, float distanceCheck)
-    {
-        for (int i = 0; i < planesList.Count; i++)
-        {
-            if (planesList[i].GetSide(cube.transform.position))
-            {
-                if (planesList[i].GetDistanceToPoint(point) >= distanceCheck)
-                {
-                    mrs[i].material.color = Color.green;
-                }
-                else
-                {
-                    mrs[i].material.color = Color.red;
-                }
-            }
-        }
-    }
-
-    bool CheckFustrum(List<Plane> planes, Vector3[] vertices)
-    {
-        mrs[0].material.color = Color.green;
-        mrs[1].material.color = Color.red;
-        mrs[2].material.color = Color.blue;
-        mrs[3].material.color = Color.black;
-        mrs[4].material.color = Color.yellow;
-        mrs[5].material.color = Color.magenta;
-
-        for (int j = 0; j < vertices.Length; j++)
-        {
-            if (planes[0].GetSide(vertices[j] + cube.transform.position))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    bool CheckNewPlanes(List<Plane> planesList, Vector3 point)
-    {
-        for (int i = 0; i < planesList.Count; i++)
-        {
-            if (!planesList[i].GetSide(point))
+            if (!plane.GetSide(vertices[i] + cube.transform.position))
             {
                 return false;
             }
@@ -151,16 +135,13 @@ public class MyPlaneTester : MonoBehaviour
         return true;
     }
 
-    bool CheckVertices(Vector3[] vertices, List<Plane> frustrumPlanes)
+    bool IsBoxOutside(Plane plane)
     {
-        for (int i = 0; i < frustrumPlanes.Count; i++)
+        for (int i = 0; i < vertices.Length; i++)
         {
-            for (int j = 0; j < vertices.Length; j++)
+            if (plane.GetSide(vertices[i] + cube.transform.position))
             {
-                if (frustrumPlanes[i].GetSide(vertices[j]))
-                {
-                    return false;
-                }
+                return false;
             }
         }
         return true;
