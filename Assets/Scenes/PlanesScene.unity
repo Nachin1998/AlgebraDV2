@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52ee046e7990ad143ac904f73c7ea980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  excersice: 3
+  excersice: 0
   cube: {fileID: 688955851}
   walls:
   - {fileID: 1986347429}

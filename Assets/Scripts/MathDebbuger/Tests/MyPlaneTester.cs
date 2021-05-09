@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MathDebbuger;
+using CustomMath;
 
 public class MyPlaneTester : MonoBehaviour
 {
@@ -17,37 +19,32 @@ public class MyPlaneTester : MonoBehaviour
     private MeshRenderer mr;
     private MeshFilter mf;
     private Vector3[] vertices;
-    private List<GameObject> VerticesObj = new List<GameObject>();
+    private List<GameObject> verticesObj = new List<GameObject>();
 
     [SerializeField] private List<GameObject> walls = new List<GameObject>();
     private List<MeshRenderer> mrs = new List<MeshRenderer>();
-    private List<Plane> planes = new List<Plane>();
+    private List<MyPlane> planes = new List<MyPlane>();
+    private Plane[] frustrumPlanes;
+    //private MyPlane[] frustrumPlanes = new MyPlane[6];
+    private Plane[] auxFrustrumPlanes;
 
-    private List<Collider> objectsToOccludeCol = new List<Collider>();
-    private List<MeshRenderer> objectsToOccludeMeshRenderer = new List<MeshRenderer>();
+    private List<Collider> occludeeColliderList = new List<Collider>();
+    private List<MeshRenderer> occludeeMeshRendererList = new List<MeshRenderer>();
 
     private Camera cam;
-    private Plane[] frustrumPlanes;
-
 
     void Start()
     {
+        cam = Camera.main;
+
         InitVertices();
         InitPlanes();
         InitOcludees();
-        
-
-        cam = Camera.main;
     }
 
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
-        {
-            UpdatePlanes();
-        }
-
         switch (excersice)
         {
             case EXCERSICE.INSIDE_HOUSE:
@@ -105,16 +102,16 @@ public class MyPlaneTester : MonoBehaviour
             case EXCERSICE.FRUSTRUM_CULLING_ALL:
 
                 frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
-
-                for (int i = 0; i < objectsToOccludeCol.Count; i++)
+                
+                for (int i = 0; i < occludeeColliderList.Count; i++)
                 {
-                    if (GeometryUtility.TestPlanesAABB(frustrumPlanes, objectsToOccludeCol[i].bounds))
+                    if (GeometryUtility.TestPlanesAABB(frustrumPlanes, occludeeColliderList[i].bounds))
                     {
-                        objectsToOccludeMeshRenderer[i].enabled = true;
+                        occludeeMeshRendererList[i].enabled = true;
                     }
                     else
                     {
-                        objectsToOccludeMeshRenderer[i].enabled = false;
+                        occludeeMeshRendererList[i].enabled = false;
                     }
                 }
 
@@ -135,7 +132,7 @@ public class MyPlaneTester : MonoBehaviour
             go.transform.position = vertices[i] + cube.transform.position;
             go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             go.transform.SetParent(cube.transform);
-            VerticesObj.Add(go);
+            verticesObj.Add(go);
         }
     }
 
@@ -144,8 +141,8 @@ public class MyPlaneTester : MonoBehaviour
         GameObject[] gos = GameObject.FindGameObjectsWithTag("Occludee");
         for (int i = 0; i < gos.Length; i++)
         {
-            objectsToOccludeCol.Add(gos[i].GetComponent<Collider>());
-            objectsToOccludeMeshRenderer.Add(gos[i].GetComponent<MeshRenderer>());
+            occludeeColliderList.Add(gos[i].GetComponent<Collider>());
+            occludeeMeshRendererList.Add(gos[i].GetComponent<MeshRenderer>());
         }
     }
 
@@ -155,16 +152,9 @@ public class MyPlaneTester : MonoBehaviour
 
         for (int i = 0; i < walls.Count; i++)
         {
-            planes.Add(new Plane(walls[i].transform.up, walls[i].transform.position));
+            //planes.Add(new Plane(walls[i].transform.up, walls[i].transform.position));
+            planes.Add(new MyPlane(new Vec3(walls[i].transform.up), new Vec3(walls[i].transform.position)));
             mrs.Add(walls[i].GetComponent<MeshRenderer>());
-        }
-    }
-
-    void UpdatePlanes()
-    {
-        for (int i = 0; i < planes.Count; i++)
-        {
-            planes[i].SetNormalAndPosition(walls[i].transform.up, walls[i].transform.position);
         }
     }
 
@@ -192,6 +182,30 @@ public class MyPlaneTester : MonoBehaviour
         return true;
     }
 
+    bool IsBoxInside(MyPlane plane)
+    {
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            if (!plane.GetSide(new Vec3(vertices[i] + cube.transform.position)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool IsBoxOutside(MyPlane plane)
+    {
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            if (plane.GetSide(new Vec3(vertices[i] + cube.transform.position)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     bool IsBoxOutsideFrustrum()
     {
         for (int i = 0; i < frustrumPlanes.Length; i++)
@@ -202,18 +216,6 @@ public class MyPlaneTester : MonoBehaviour
             }
         }
         return false;
-    }
-
-    bool IsObjectOutside(Plane plane, GameObject go)
-    {
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            if (plane.GetSide(vertices[i] + go.transform.position))
-            {
-                return false;
-            }
-        }
-        return true;
     }
 
     bool IsObjectOutsideFrustrum()
