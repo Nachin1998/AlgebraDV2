@@ -8,7 +8,8 @@ public class MyPlaneTester : MonoBehaviour
     {
         INSIDE_HOUSE,
         OUTSIDE_HOUSE,
-        FRUSTRUM_CULLING
+        FRUSTRUM_CULLING_CUBE,
+        FRUSTRUM_CULLING_ALL
     }
     [SerializeField] private EXCERSICE excersice;
 
@@ -22,8 +23,8 @@ public class MyPlaneTester : MonoBehaviour
     private List<MeshRenderer> mrs = new List<MeshRenderer>();
     private List<Plane> planes = new List<Plane>();
 
-    [SerializeField] private LayerMask occludees;
-    private List<GameObject> objectsToOcclude = new List<GameObject>();
+    private List<Collider> objectsToOccludeCol = new List<Collider>();
+    private List<MeshRenderer> objectsToOccludeMeshRenderer = new List<MeshRenderer>();
 
     private Camera cam;
     private Plane[] frustrumPlanes;
@@ -31,27 +32,22 @@ public class MyPlaneTester : MonoBehaviour
 
     void Start()
     {
-        mr = cube.GetComponent<MeshRenderer>();
-        mf = cube.GetComponent<MeshFilter>();
-        vertices = mf.mesh.vertices;
-
         InitVertices();
-
-        for (int i = 0; i < walls.Count; i++)
-        {
-            planes.Add(new Plane(walls[i].transform.up, walls[i].transform.position));
-            mrs.Add(walls[i].GetComponent<MeshRenderer>());
-        }
-
-
+        InitPlanes();
+        InitOcludees();
+        
 
         cam = Camera.main;
-        frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
     }
 
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            UpdatePlanes();
+        }
+
         switch (excersice)
         {
             case EXCERSICE.INSIDE_HOUSE:
@@ -88,22 +84,38 @@ public class MyPlaneTester : MonoBehaviour
 
                 break;
 
-            case EXCERSICE.FRUSTRUM_CULLING:
+            case EXCERSICE.FRUSTRUM_CULLING_CUBE:
 
                 frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
 
-                if (IsBoxOutside(frustrumPlanes[0]) ||
-                    IsBoxOutside(frustrumPlanes[1]) ||
-                    IsBoxOutside(frustrumPlanes[2]) ||
-                    IsBoxOutside(frustrumPlanes[3]) ||
-                    IsBoxOutside(frustrumPlanes[4]) ||
-                    IsBoxOutside(frustrumPlanes[5]))
+                for (int i = 0; i < frustrumPlanes.Length; i++)
                 {
-                    mr.enabled = false;
+                    if (IsBoxOutsideFrustrum())
+                    {
+                        mr.enabled = false;
+                    }
+                    else
+                    {
+                        mr.enabled = true;
+                    }
                 }
-                else
+
+                break;
+
+            case EXCERSICE.FRUSTRUM_CULLING_ALL:
+
+                frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
+
+                for (int i = 0; i < objectsToOccludeCol.Count; i++)
                 {
-                    mr.enabled = true;
+                    if (GeometryUtility.TestPlanesAABB(frustrumPlanes, objectsToOccludeCol[i].bounds))
+                    {
+                        objectsToOccludeMeshRenderer[i].enabled = true;
+                    }
+                    else
+                    {
+                        objectsToOccludeMeshRenderer[i].enabled = false;
+                    }
                 }
 
                 break;
@@ -112,6 +124,10 @@ public class MyPlaneTester : MonoBehaviour
 
     void InitVertices()
     {
+        mr = cube.GetComponent<MeshRenderer>();
+        mf = cube.GetComponent<MeshFilter>();
+        vertices = mf.mesh.vertices;
+
         for (int i = 0; i < vertices.Length / 3; i++)
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -120,6 +136,35 @@ public class MyPlaneTester : MonoBehaviour
             go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             go.transform.SetParent(cube.transform);
             VerticesObj.Add(go);
+        }
+    }
+
+    void InitOcludees()
+    {
+        GameObject[] gos = GameObject.FindGameObjectsWithTag("Occludee");
+        for (int i = 0; i < gos.Length; i++)
+        {
+            objectsToOccludeCol.Add(gos[i].GetComponent<Collider>());
+            objectsToOccludeMeshRenderer.Add(gos[i].GetComponent<MeshRenderer>());
+        }
+    }
+
+    void InitPlanes()
+    {
+        frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
+
+        for (int i = 0; i < walls.Count; i++)
+        {
+            planes.Add(new Plane(walls[i].transform.up, walls[i].transform.position));
+            mrs.Add(walls[i].GetComponent<MeshRenderer>());
+        }
+    }
+
+    void UpdatePlanes()
+    {
+        for (int i = 0; i < planes.Count; i++)
+        {
+            planes[i].SetNormalAndPosition(walls[i].transform.up, walls[i].transform.position);
         }
     }
 
@@ -145,5 +190,41 @@ public class MyPlaneTester : MonoBehaviour
             }
         }
         return true;
+    }
+
+    bool IsBoxOutsideFrustrum()
+    {
+        for (int i = 0; i < frustrumPlanes.Length; i++)
+        {
+            if (IsBoxOutside(frustrumPlanes[i]))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool IsObjectOutside(Plane plane, GameObject go)
+    {
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            if (plane.GetSide(vertices[i] + go.transform.position))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool IsObjectOutsideFrustrum()
+    {
+        for (int i = 0; i < frustrumPlanes.Length; i++)
+        {
+            if (IsBoxOutside(frustrumPlanes[i]))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
