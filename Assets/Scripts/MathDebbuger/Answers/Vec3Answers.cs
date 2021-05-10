@@ -61,11 +61,11 @@ public class Vec3Answers : MonoBehaviour
         switch (excersice)
         {
             case EXCERSICE.EX_1:
-                value = a + b; //sum
+                value = a + b;
                 break;
 
             case EXCERSICE.EX_2:
-                value = b - a; //difference 
+                value = b - a; 
                 break;
 
             case EXCERSICE.EX_3:
@@ -97,10 +97,11 @@ public class Vec3Answers : MonoBehaviour
                 break;
 
             case EXCERSICE.EX_8:
+                //value = Vec3.ClampMagnitude(??????????)
                 break;
 
             case EXCERSICE.EX_9:
-                value = Vec3.Reflect(b, a).normalized;
+                value = Vec3.Reflect(b, a);
                 break;
 
             case EXCERSICE.EX_10:

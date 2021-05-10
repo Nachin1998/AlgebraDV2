@@ -32,6 +32,12 @@ namespace CustomMath
             distance = -Vec3.Dot(normal, a);
         }
 
+        public MyPlane(Vec3 inNormal, float d)
+        {
+            normal = inNormal.normalized;
+            distance = d;
+        }
+
         public MyPlane(Plane plane)
         {
             normal = new Vec3(plane.normal);
@@ -43,12 +49,13 @@ namespace CustomMath
         #region Functions
         public static MyPlane Translate(MyPlane plane, Vec3 translation)
         {
-            throw new NotImplementedException();
+            return new MyPlane(plane.normal, plane.distance += Vec3.Dot(plane.normal, translation));
         }
 
         public Vec3 ClosestPointOnPlane(Vec3 point)
         {
-            throw new NotImplementedException();
+            float distanceAux = Vector3.Dot(normal, point) + distance;
+            return point - (normal * distanceAux);
         }
 
         public void Flip()
@@ -59,12 +66,12 @@ namespace CustomMath
 
         public float GetDistanceToPoint(Vec3 point)
         {
-            throw new NotImplementedException();
+            return Vec3.Dot(normal, point) + distance;
         }
 
         public bool GetSide(Vec3 point)
         {
-            if ((Vec3.Dot(normal, point) + distance) > 0f)
+            if (GetDistanceToPoint(point) > 0f)
             {
                 return true;
             }
@@ -73,7 +80,10 @@ namespace CustomMath
 
         public bool SameSide(Vec3 inPt0, Vec3 inPt1)
         {
-            throw new NotImplementedException();
+            float dist1 = GetDistanceToPoint(inPt0);
+            float dist2 = GetDistanceToPoint(inPt1);
+
+            return (dist1 > 0.0f && dist2 > 0.0f) || (dist1 <= 0.0f && dist2 <= 0.0f);
         }
 
         public void Set3Points(Vec3 a, Vec3 b, Vec3 c)
@@ -90,23 +100,15 @@ namespace CustomMath
             normal = inNormal.normalized;
             distance = -Vec3.Dot(inNormal, inPoint);
         }
-        public override string ToString()
-        {
-            throw new NotImplementedException();
-        }
-        public string ToString(string format)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Translate(Vec3 translation)
         {
-            throw new NotImplementedException();
+            distance += Vec3.Dot(normal, translation);
         }
 
         public bool Equals(Plane other)
         {
-            throw new NotImplementedException();
+            return (distance == other.distance && normal == other.normal);
         }
         #endregion
     }
