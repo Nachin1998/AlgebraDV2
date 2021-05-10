@@ -4,7 +4,7 @@ using UnityEngine;
 using MathDebbuger;
 using CustomMath;
 
-public class Answers : MonoBehaviour
+public class Vec3Answers : MonoBehaviour
 {
     public enum EXCERSICE
     {
@@ -20,8 +20,9 @@ public class Answers : MonoBehaviour
         EX_10
     }
     public EXCERSICE excersice = EXCERSICE.EX_1;
+    public Color vectorColor;
 
-    [Space]
+    [Space(10)]
 
     public Vector3 A;
     public Vector3 B;
@@ -44,8 +45,8 @@ public class Answers : MonoBehaviour
         Vector3Debugger.AddVector(a, Color.green, "Green");
         Vector3Debugger.EnableEditorView("Green");
 
-        Vector3Debugger.AddVector(value, Color.red, "Red");
-        Vector3Debugger.EnableEditorView("Red");
+        Vector3Debugger.AddVector(value, vectorColor, "value");
+        Vector3Debugger.EnableEditorView("value");
     }
 
     // Update is called once per frame
@@ -79,7 +80,10 @@ public class Answers : MonoBehaviour
 
             case EXCERSICE.EX_5:
                 timer += Time.deltaTime;
-                if (timer >= 1) timer = 0;
+                if (timer >= 1)
+                {
+                    timer = 0;
+                }
 
                 value = Vec3.Lerp(b, a, timer);
                 break;
@@ -101,11 +105,16 @@ public class Answers : MonoBehaviour
 
             case EXCERSICE.EX_10:
                 timer += Time.deltaTime;
-                if (timer >= 10) timer = 0;
+                if (timer >= 10)
+                {
+                    timer = 0;
+                }
+
                 value = Vec3.LerpUnclamped(b, a, timer);
                 break;
         }
-        
-        Vector3Debugger.UpdatePosition("Red", value);
+
+        Vector3Debugger.UpdateColor("value", vectorColor);
+        Vector3Debugger.UpdatePosition("value", value);
     }
 }

@@ -163,11 +163,11 @@ namespace CustomMath
         public static Vec3 Lerp(Vec3 a, Vec3 b, float t)
         {
             float aux = Mathf.Clamp(t, 0, 1);
-            return a + new Vec3((b - a) * aux);
+            return a + (b - a) * aux;
         }
         public static Vec3 LerpUnclamped(Vec3 a, Vec3 b, float t)
         {
-            return a + new Vec3((b - a) * t);
+            return a + (b - a) * t;
         }
         public static Vec3 Max(Vec3 a, Vec3 b)
         {

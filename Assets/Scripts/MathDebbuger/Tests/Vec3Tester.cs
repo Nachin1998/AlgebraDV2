@@ -11,11 +11,11 @@ public class Vec3Tester : MonoBehaviour
 
     public Vector3 A;
     public Vector3 B;
-    private Vector3 value;
+    private float value;
 
     private Vec3 a;
     private Vec3 b;
-    private Vec3 value2;
+    private float value2;
 
     void Start()
     {
@@ -24,8 +24,8 @@ public class Vec3Tester : MonoBehaviour
         a = new Vec3(A);
         b = new Vec3(B);
 
-        value = Vector3.Project(A, B).normalized;
-        value2 = Vec3.Project(a, b).normalized;
+        //value = Vector3.Project(A, B).normalized;
+        //value2 = Vec3.Project(a, b).normalized;
 
         Vector3Debugger.AddVector(Vector3.zero, a, Color.blue, "Test Blue");
         Vector3Debugger.EnableEditorView("Test Blue");
@@ -33,8 +33,8 @@ public class Vec3Tester : MonoBehaviour
         Vector3Debugger.AddVector(Vector3.zero, b, Color.green, "Test Green");
         Vector3Debugger.EnableEditorView("Test Green");
 
-        Vector3Debugger.AddVector(Vector3.zero, value2, Color.red, "Test Red");
-        Vector3Debugger.EnableEditorView("Test Red");
+        //Vector3Debugger.AddVector(Vector3.zero, value2, Color.red, "Test Red");
+        //Vector3Debugger.EnableEditorView("Test Red");
 
         Debug.Log("1: " + value);
         Debug.Log("2: " + value2);
@@ -47,11 +47,12 @@ public class Vec3Tester : MonoBehaviour
         b = new Vec3(B);
 
         //value2 = Vec3.Reflect(a, b);
-        value = Vector3.Reflect(A, B);
-        value2 = Vec3.Reflect(a, b);
+        value = Vector3.Angle(A, B);
+        value2 = Vec3.Angle(a, b);
+
         Vector3Debugger.UpdatePosition("Test Blue", a);
         Vector3Debugger.UpdatePosition("Test Green", b);
-        Vector3Debugger.UpdatePosition("Test Red", value2);
+        //Vector3Debugger.UpdatePosition("Test Red", value2);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {

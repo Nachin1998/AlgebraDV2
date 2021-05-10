@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MathDebbuger;
 using CustomMath;
 
-public class MyPlaneTester : MonoBehaviour
+public class MyPlaneAnswers : MonoBehaviour
 {
     private enum EXCERSICE
     {
@@ -41,7 +40,6 @@ public class MyPlaneTester : MonoBehaviour
         InitPlanes();
         InitOcludees();
     }
-
 
     void Update()
     {
