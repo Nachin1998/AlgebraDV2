@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 namespace CustomMath
 {
-    public struct MyPlane : IEquatable<Plane>
+    public struct MyPlane : IEquatable<MyPlane>
     {
         #region Variables
         Vec3 normal;
@@ -109,6 +108,11 @@ namespace CustomMath
         public bool Equals(Plane other)
         {
             return (distance == other.distance && normal == other.normal);
+        }
+
+        public bool Equals(MyPlane other)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
