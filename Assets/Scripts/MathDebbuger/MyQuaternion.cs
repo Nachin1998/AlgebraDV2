@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace CustomMath
 {
+    [System.Serializable]
     public struct MyQuaternion : IEquatable<MyQuaternion>
     {
         public const float kEpsilon = 1E-06F;
@@ -13,7 +14,27 @@ namespace CustomMath
         public float w;
 
         public static MyQuaternion identity => new MyQuaternion(0f, 0f, 0f, 1f);
-        //public Vec3 eulerAngles { get; set; }
+        public Vec3 eulerAngles
+        {
+            get
+            {
+                Vec3 a = Vec3.Zero;
+                a.x = Mathf.Atan2(2 * x * w - 2 * y * z, 1 - 2 * (x * x) - 2 * (z * z)) * Mathf.Rad2Deg;
+                a.y = Mathf.Atan2(2 * y * w - 2 * x * z, 1 - 2 * (y * y) - 2 * (z * z)) * Mathf.Rad2Deg;
+
+                a.z = Mathf.Asin(2 * x * y + 2 * z * w) * Mathf.Rad2Deg;
+                return a;
+            }
+            set
+            {
+                MyQuaternion q = Euler(value);
+                x = q.x;
+                y = q.y;
+                z = q.z;
+                w = q.w;
+            }
+        }
+
         public MyQuaternion normalized => Normalize(this);
 
         public MyQuaternion(float x, float y, float z, float w)
@@ -24,6 +45,21 @@ namespace CustomMath
             this.w = w;
         }
 
+        public MyQuaternion(Quaternion quaternion)
+        {
+            x = quaternion.x;
+            y = quaternion.y;
+            z = quaternion.z;
+            w = quaternion.w;
+        }
+
+        public MyQuaternion(MyQuaternion quaternion)
+        {
+            x = quaternion.x;
+            y = quaternion.y;
+            z = quaternion.z;
+            w = quaternion.w;
+        }
         //
         // Resumen:
         //     Returns the angle in degrees between two rotations a and b.
@@ -32,7 +68,13 @@ namespace CustomMath
         //   a:
         //
         //   b:
-        public static float Angle(MyQuaternion a, MyQuaternion b) { throw new NotImplementedException(); }
+        public static float Angle(MyQuaternion a, MyQuaternion b)
+        {
+            MyQuaternion inv = Inverse(a);
+            MyQuaternion result = b * inv;
+
+            return Mathf.Acos(Mathf.Min(Mathf.Abs(Dot(a, b)), 1.0F)) * 2.0F * Mathf.Rad2Deg;
+        }
         //
         // Resumen:
         //     Creates a rotation which rotates angle degrees around axis.
@@ -43,14 +85,6 @@ namespace CustomMath
         //   axis:
         public static MyQuaternion AngleAxis(float angle, Vec3 axis) { throw new NotImplementedException(); }
         public static MyQuaternion AxisAngle(Vec3 axis, float angle) { throw new NotImplementedException(); }
-        //
-        // Resumen:
-        //     The dot product between two rotations.
-        //
-        // Parámetros:
-        //   a:
-        //
-        //   b:
         public static float Dot(MyQuaternion a, MyQuaternion b)
         {
             return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
@@ -62,7 +96,26 @@ namespace CustomMath
         //
         // Parámetros:
         //   euler:
-        public static MyQuaternion Euler(Vec3 euler) { throw new NotImplementedException(); }
+        public static MyQuaternion Euler(Vec3 euler)
+        {
+            MyQuaternion qX = identity;
+            MyQuaternion qY = identity;
+            MyQuaternion qZ = identity;
+
+            float sin = Mathf.Sin(Mathf.Deg2Rad * euler.x * 0.5f);
+            float cos = Mathf.Cos(Mathf.Deg2Rad * euler.x * 0.5f);
+            qX.Set(sin, 0.0f, 0.0f, cos);
+
+            sin = Mathf.Sin(Mathf.Deg2Rad * euler.y * 0.5f);
+            cos = Mathf.Cos(Mathf.Deg2Rad * euler.y * 0.5f);
+            qY.Set(0.0f, sin, 0.0f, cos);
+
+            sin = Mathf.Sin(Mathf.Deg2Rad * euler.z * 0.5f);
+            cos = Mathf.Cos(Mathf.Deg2Rad * euler.z * 0.5f);
+            qZ.Set(0.0f, 0.0f, sin, cos);
+
+            return new MyQuaternion(qX * qY * qZ);
+        }
         //
         // Resumen:
         //     Returns a rotation that rotates z degrees around the z axis, x degrees around
@@ -74,11 +127,38 @@ namespace CustomMath
         //   y:
         //
         //   z:
-        public static MyQuaternion Euler(float x, float y, float z) { throw new NotImplementedException(); }
-        public static MyQuaternion EulerAngles(float x, float y, float z) { throw new NotImplementedException(); }
-        public static MyQuaternion EulerAngles(Vec3 euler) { throw new NotImplementedException(); }
-        public static MyQuaternion EulerRotation(float x, float y, float z) { throw new NotImplementedException(); }
-        public static MyQuaternion EulerRotation(Vec3 euler) { throw new NotImplementedException(); }
+        public static MyQuaternion Euler(float x, float y, float z)
+        {
+            x *= Mathf.Deg2Rad;
+            y *= Mathf.Deg2Rad;
+            z *= Mathf.Deg2Rad;
+
+            MyQuaternion q = new MyQuaternion();
+            q.x = Mathf.Sin(x * 0.5f);
+            q.y = Mathf.Sin(y * 0.5f);
+            q.z = Mathf.Sin(z * 0.5f);
+            q.w = Mathf.Cos(x * 0.5f) * Mathf.Cos(y * 0.5f) * Mathf.Cos(z * 0.5f) -
+                  Mathf.Sin(x * 0.5f) * Mathf.Sin(y * 0.5f) * Mathf.Sin(z * 0.5f);
+            q.Normalize();
+            return q;
+        }
+
+        public static MyQuaternion EulerAngles(float x, float y, float z) 
+        {
+            throw new NotImplementedException(); 
+        }
+        public static MyQuaternion EulerAngles(Vec3 euler) 
+        {
+            throw new NotImplementedException(); 
+        }
+        public static MyQuaternion EulerRotation(float x, float y, float z) 
+        {
+            throw new NotImplementedException(); 
+        }
+        public static MyQuaternion EulerRotation(Vec3 euler) 
+        {
+            throw new NotImplementedException(); 
+        }
         //
         // Resumen:
         //     Creates a rotation which rotates from fromDirection to toDirection.
@@ -87,14 +167,20 @@ namespace CustomMath
         //   fromDirection:
         //
         //   toDirection:
-        public static MyQuaternion FromToRotation(Vec3 fromDirection, Vec3 toDirection) { throw new NotImplementedException(); }
+        public static MyQuaternion FromToRotation(Vec3 fromDirection, Vec3 toDirection) 
+        {
+            throw new NotImplementedException(); 
+        }
         //
         // Resumen:
         //     Returns the Inverse of rotation.
         //
         // Parámetros:
         //   rotation:
-        public static MyQuaternion Inverse(MyQuaternion rotation) { throw new NotImplementedException(); }
+        public static MyQuaternion Inverse(MyQuaternion rotation)
+        {
+            return new MyQuaternion(-rotation.x, -rotation.y, -rotation.z, rotation.w);
+        }
         //
         // Resumen:
         //     Interpolates between a and b by t and normalizes the result afterwards. The parameter
@@ -106,7 +192,10 @@ namespace CustomMath
         //   b:
         //
         //   t:
-        public static MyQuaternion Lerp(MyQuaternion a, MyQuaternion b, float t) { throw new NotImplementedException(); }
+        public static MyQuaternion Lerp(MyQuaternion a, MyQuaternion b, float t) 
+        {
+            throw new NotImplementedException(); 
+        }
         //
         // Resumen:
         //     Interpolates between a and b by t and normalizes the result afterwards. The parameter
@@ -118,7 +207,10 @@ namespace CustomMath
         //   b:
         //
         //   t:
-        public static MyQuaternion LerpUnclamped(MyQuaternion a, MyQuaternion b, float t) { throw new NotImplementedException(); }
+        public static MyQuaternion LerpUnclamped(MyQuaternion a, MyQuaternion b, float t) 
+        {
+            throw new NotImplementedException(); 
+        }
         //
         // Resumen:
         //     Creates a rotation with the specified forward and upwards directions.
@@ -130,7 +222,10 @@ namespace CustomMath
         //   upwards:
         //     The vector that defines in which direction up is.
 
-        public static MyQuaternion LookRotation(Vec3 forward) { throw new NotImplementedException(); }
+        public static MyQuaternion LookRotation(Vec3 forward) 
+        {
+            throw new NotImplementedException(); 
+        }
         //
         // Resumen:
         //     Creates a rotation with the specified forward and upwards directions.
@@ -143,7 +238,9 @@ namespace CustomMath
         //     The vector that defines in which direction up is.
 
         public static MyQuaternion LookRotation(Vec3 forward, Vec3 upwards) //vec3 up
-        { throw new NotImplementedException(); }
+        { 
+            throw new NotImplementedException(); 
+        }
         //
         // Resumen:
         //     Converts this MyQuaternion to one with the same orientation but with a magnitude
@@ -154,7 +251,6 @@ namespace CustomMath
         public static MyQuaternion Normalize(MyQuaternion q)
         {
             float mag = Mathf.Sqrt(Dot(q, q));
-
             return mag < Mathf.Epsilon ? identity : new MyQuaternion(q.x / mag, q.y / mag, q.z / mag, q.w / mag);
         }
         //
@@ -168,7 +264,9 @@ namespace CustomMath
         //
         //   maxDegreesDelta:
         public static MyQuaternion RotateTowards(MyQuaternion from, MyQuaternion to, float maxDegreesDelta)
-        { throw new NotImplementedException(); }
+        { 
+            throw new NotImplementedException(); 
+        }
         //
         // Resumen:
         //     Spherically interpolates between MyQuaternions a and b by ratio t. The parameter
@@ -205,35 +303,33 @@ namespace CustomMath
         public static Vec3 ToEulerAngles(MyQuaternion rotation)
         { throw new NotImplementedException(); }
         public bool Equals(MyQuaternion other)
-        { throw new NotImplementedException(); }
+        {
+            return this == other;
+        }
+
         public override bool Equals(object other)
-        { throw new NotImplementedException(); }
+        {
+            if (!(other is MyQuaternion)) return false;
+            return Equals((MyQuaternion)other);
+        }
 
         public bool Equals(Quaternion other)
         {
             throw new NotImplementedException();
         }
 
-        public override int GetHashCode()
-        { throw new NotImplementedException(); }
         public void Normalize()
         {
             this = Normalize(this);
         }
-        //
-        // Resumen:
-        //     Set x, y, z and w components of an existing MyQuaternion.
-        //
-        // Parámetros:
-        //   newX:
-        //
-        //   newY:
-        //
-        //   newZ:
-        //
-        //   newW:
+
         public void Set(float newX, float newY, float newZ, float newW)
-        { throw new NotImplementedException(); }
+        {
+            x = newX;
+            y = newY;
+            z = newZ;
+            w = newW;
+        }
 
         public void SetAxisAngle(Vec3 axis, float angle)
         { throw new NotImplementedException(); }
@@ -301,16 +397,10 @@ namespace CustomMath
         //
         // Parámetros:
         //   format:
-        public string ToString(string format)
-        { throw new NotImplementedException(); }
-        //
-        // Resumen:
-        //     Returns a nicely formatted string of the MyQuaternion.
-        //
-        // Parámetros:
-        //   format:
         public override string ToString()
-        { throw new NotImplementedException(); }
+        {
+            return "(" + x.ToString() + ", " + y.ToString() + ", " + z.ToString() + ", " + w.ToString() + ")";
+        }
 
         public static Vec3 operator *(MyQuaternion rotation, Vec3 point)
         {
