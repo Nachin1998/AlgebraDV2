@@ -11,12 +11,14 @@ public class MyQuaternionAnswers : MonoBehaviour
     public Quaternion testQuaternionA;
     public Quaternion testQuaternionB;
     public Vector3 testVector;
+    public float testAngle;
 
     Quaternion testQuat1;
     Quaternion testQuat2;
 
     MyQuaternion myTestQuaternionA;
     MyQuaternion myTestQuaternionB;
+
     void Start()
     {
         testQuat1 = test1.transform.rotation;
@@ -24,18 +26,18 @@ public class MyQuaternionAnswers : MonoBehaviour
 
         myTestQuaternionA = new MyQuaternion(testQuat1);
         myTestQuaternionB = new MyQuaternion(testQuat2);
-
-        Debug.Log("Real Quaternion: " + Quaternion.Angle(testQuat1, testQuat2));
-        Debug.Log("My Quat: " + MyQuaternion.Angle(myTestQuaternionA, myTestQuaternionB));
     }
 
 
     void Update()
     {
+            myTestQuaternionA = new MyQuaternion(testQuat1);
+            myTestQuaternionB = new MyQuaternion(testQuat2);
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("Real Quaternion: " + testQuat1.eulerAngles);// Quaternion.Angle(test1.transform.rotation, test2.transform.rotation));
-            Debug.Log("Test Quaternion: " + myTestQuaternionA.eulerAngles);// Quaternion.Angle(test1.transform.rotation, test2.transform.rotation));
+
+
         }
     }
 }

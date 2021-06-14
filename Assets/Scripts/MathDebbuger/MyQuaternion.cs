@@ -21,7 +21,6 @@ namespace CustomMath
                 Vec3 a = Vec3.Zero;
                 a.x = Mathf.Atan2(2 * x * w - 2 * y * z, 1 - 2 * (x * x) - 2 * (z * z)) * Mathf.Rad2Deg;
                 a.y = Mathf.Atan2(2 * y * w - 2 * x * z, 1 - 2 * (y * y) - 2 * (z * z)) * Mathf.Rad2Deg;
-
                 a.z = Mathf.Asin(2 * x * y + 2 * z * w) * Mathf.Rad2Deg;
                 return a;
             }
@@ -83,8 +82,20 @@ namespace CustomMath
         //   angle:
         //
         //   axis:
-        public static MyQuaternion AngleAxis(float angle, Vec3 axis) { throw new NotImplementedException(); }
-        public static MyQuaternion AxisAngle(Vec3 axis, float angle) { throw new NotImplementedException(); }
+        public static MyQuaternion AngleAxis(float angle, Vec3 axis) 
+        {
+            angle *= Mathf.Deg2Rad * 0.5f;
+            axis.Normalize();
+
+            MyQuaternion auxQuat;
+            auxQuat.x = axis.x * Mathf.Sin(angle);
+            auxQuat.y = axis.y * Mathf.Sin(angle);
+            auxQuat.z = axis.z * Mathf.Sin(angle);
+            auxQuat.w = Mathf.Cos(angle);
+
+            return auxQuat.normalized;
+        }
+
         public static float Dot(MyQuaternion a, MyQuaternion b)
         {
             return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
@@ -181,35 +192,19 @@ namespace CustomMath
         {
             return new MyQuaternion(-rotation.x, -rotation.y, -rotation.z, rotation.w);
         }
-        //
-        // Resumen:
-        //     Interpolates between a and b by t and normalizes the result afterwards. The parameter
-        //     t is clamped to the range [0, 1].
-        //
-        // Parámetros:
-        //   a:
-        //
-        //   b:
-        //
-        //   t:
+
         public static MyQuaternion Lerp(MyQuaternion a, MyQuaternion b, float t) 
         {
-            throw new NotImplementedException(); 
+            t = Mathf.Clamp(t, 0, 1);
+            return LerpUnclamped(a, b, t);
         }
-        //
-        // Resumen:
-        //     Interpolates between a and b by t and normalizes the result afterwards. The parameter
-        //     t is not clamped.
-        //
-        // Parámetros:
-        //   a:
-        //
-        //   b:
-        //
-        //   t:
+
         public static MyQuaternion LerpUnclamped(MyQuaternion a, MyQuaternion b, float t) 
         {
-            throw new NotImplementedException(); 
+            MyQuaternion difference = new MyQuaternion(b.x - a.x, b.y - a.y, b.z - a.z, b.w - b.w);
+            MyQuaternion differenceLerped = new MyQuaternion(difference.x * t, difference.y * t, difference.z * t, difference.w * t);
+
+            return new MyQuaternion(a.x + differenceLerped.x, a.y + differenceLerped.y, a.z + differenceLerped.z, a.w + differenceLerped.w).normalized;
         }
         //
         // Resumen:
@@ -400,6 +395,11 @@ namespace CustomMath
         public override string ToString()
         {
             return "(" + x.ToString() + ", " + y.ToString() + ", " + z.ToString() + ", " + w.ToString() + ")";
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public static Vec3 operator *(MyQuaternion rotation, Vec3 point)
