@@ -11,9 +11,8 @@ namespace CustomMath
 
         public Vec3 Normal { get { return normal; } set { normal = value; } }
         public float Distance { get { return distance; } set { distance = value; } }
-        public MyPlane Flipped { get { return new MyPlane(-normal, -normal * distance); } }
+        public MyPlane Flipped { get { return new MyPlane(-normal, -normal * distance); } }        
         #endregion
-
 
         #region Constructors
         public MyPlane(Vec3 inNormal, Vec3 inPoint)

@@ -2,21 +2,13 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
-/Quaternions/[Ll]ibrary/
-/Quaternions/[Tt]emp/
-/Quaternions/[Oo]bj/
-/Quaternions/[Bb]uild/
-/Quaternions/[Bb]uilds/
-/Quaternions/[Ll]ogs/
-/Quaternions/[Mm]emoryCaptures/
-
-/Vector3-Planes/[Ll]ibrary/
-/Vector3-Planes/[Tt]emp/
-/Vector3-Planes/[Oo]bj/
-/Vector3-Planes/[Bb]uild/
-/Vector3-Planes/[Bb]uilds/
-/Vector3-Planes/[Ll]ogs/
-/Vector3-Planes/[Mm]emoryCaptures/
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Mm]emoryCaptures/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
