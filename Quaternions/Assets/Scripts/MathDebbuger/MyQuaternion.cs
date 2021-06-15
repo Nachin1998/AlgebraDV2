@@ -82,7 +82,7 @@ namespace CustomMath
         //   angle:
         //
         //   axis:
-        public static MyQuaternion AngleAxis(float angle, Vec3 axis) 
+        public static MyQuaternion AngleAxis(float angle, Vec3 axis)
         {
             angle *= Mathf.Deg2Rad * 0.5f;
             axis.Normalize();
@@ -154,21 +154,21 @@ namespace CustomMath
             return q;
         }
 
-        public static MyQuaternion EulerAngles(float x, float y, float z) 
+        public static MyQuaternion EulerAngles(float x, float y, float z)
         {
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
         }
-        public static MyQuaternion EulerAngles(Vec3 euler) 
+        public static MyQuaternion EulerAngles(Vec3 euler)
         {
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
         }
-        public static MyQuaternion EulerRotation(float x, float y, float z) 
+        public static MyQuaternion EulerRotation(float x, float y, float z)
         {
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
         }
-        public static MyQuaternion EulerRotation(Vec3 euler) 
+        public static MyQuaternion EulerRotation(Vec3 euler)
         {
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
         }
         //
         // Resumen:
@@ -178,9 +178,9 @@ namespace CustomMath
         //   fromDirection:
         //
         //   toDirection:
-        public static MyQuaternion FromToRotation(Vec3 fromDirection, Vec3 toDirection) 
+        public static MyQuaternion FromToRotation(Vec3 fromDirection, Vec3 toDirection)
         {
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
         }
         //
         // Resumen:
@@ -193,13 +193,13 @@ namespace CustomMath
             return new MyQuaternion(-rotation.x, -rotation.y, -rotation.z, rotation.w);
         }
 
-        public static MyQuaternion Lerp(MyQuaternion a, MyQuaternion b, float t) 
+        public static MyQuaternion Lerp(MyQuaternion a, MyQuaternion b, float t)
         {
             t = Mathf.Clamp(t, 0, 1);
             return LerpUnclamped(a, b, t);
         }
 
-        public static MyQuaternion LerpUnclamped(MyQuaternion a, MyQuaternion b, float t) 
+        public static MyQuaternion LerpUnclamped(MyQuaternion a, MyQuaternion b, float t)
         {
             MyQuaternion difference = new MyQuaternion(b.x - a.x, b.y - a.y, b.z - a.z, b.w - b.w);
             MyQuaternion differenceLerped = new MyQuaternion(difference.x * t, difference.y * t, difference.z * t, difference.w * t);
@@ -217,9 +217,9 @@ namespace CustomMath
         //   upwards:
         //     The vector that defines in which direction up is.
 
-        public static MyQuaternion LookRotation(Vec3 forward) 
+        public static MyQuaternion LookRotation(Vec3 forward)
         {
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
         }
         //
         // Resumen:
@@ -233,8 +233,8 @@ namespace CustomMath
         //     The vector that defines in which direction up is.
 
         public static MyQuaternion LookRotation(Vec3 forward, Vec3 upwards) //vec3 up
-        { 
-            throw new NotImplementedException(); 
+        {
+            throw new NotImplementedException();
         }
         //
         // Resumen:
@@ -259,8 +259,8 @@ namespace CustomMath
         //
         //   maxDegreesDelta:
         public static MyQuaternion RotateTowards(MyQuaternion from, MyQuaternion to, float maxDegreesDelta)
-        { 
-            throw new NotImplementedException(); 
+        {
+            throw new NotImplementedException();
         }
         //
         // Resumen:

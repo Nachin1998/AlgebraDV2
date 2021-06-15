@@ -52,7 +52,7 @@ namespace CustomMath
 
         public static MyMatrix4x4 identity => new MyMatrix4x4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, 0), new Vector4(0, 0, 1, 0), new Vector4(0, 0, 0, 1));
 
-        public static MyMatrix4x4 Rotate(MyQuaternion q)
+        public static MyMatrix4x4 Rotate(Quaternion q)
         {
             MyMatrix4x4 mat = identity;
 
@@ -91,7 +91,7 @@ namespace CustomMath
             return mat;
         }
 
-        public static MyMatrix4x4 TRS(Vec3 pos, MyQuaternion q, Vec3 s)
+        public static MyMatrix4x4 TRS(Vec3 pos, Quaternion q, Vec3 s)
         {
             MyMatrix4x4 trs = zero;
             trs = Translate(pos) * Rotate(q) * Scale(s);

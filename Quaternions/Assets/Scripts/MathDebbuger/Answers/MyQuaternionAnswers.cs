@@ -31,13 +31,7 @@ public class MyQuaternionAnswers : MonoBehaviour
 
     void Update()
     {
-            myTestQuaternionA = new MyQuaternion(testQuat1);
-            myTestQuaternionB = new MyQuaternion(testQuat2);
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-
-
-        }
+        myTestQuaternionA = new MyQuaternion(testQuat1);
+        myTestQuaternionB = new MyQuaternion(testQuat2);
     }
 }
