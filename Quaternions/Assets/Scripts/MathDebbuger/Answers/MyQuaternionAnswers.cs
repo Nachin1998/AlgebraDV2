@@ -1,37 +1,56 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using CustomMath;
+using MathDebbuger;
 
 public class MyQuaternionAnswers : MonoBehaviour
 {
-    public GameObject test1;
-    public GameObject test2;
+    private enum Excersice
+    {
+        FIRST,
+        SECOND,
+        THIRD
+    }
+    [SerializeField] private Excersice excersice = Excersice.FIRST;
+    [Space]
+    [SerializeField] private List<Vector3> secuencePointList = null;
 
-    public Quaternion testQuaternionA;
-    public Quaternion testQuaternionB;
-    public Vector3 testVector;
-    public float testAngle;
+    [SerializeField] private GameObject test1 = null;
+    [SerializeField] private GameObject test2 = null;
 
-    Quaternion testQuat1;
-    Quaternion testQuat2;
-
-    MyQuaternion myTestQuaternionA;
-    MyQuaternion myTestQuaternionB;
+    [SerializeField] private float speed = 0f;
+    [SerializeField] private float angle = 0f;
 
     void Start()
     {
-        testQuat1 = test1.transform.rotation;
-        testQuat2 = test2.transform.rotation;
+        secuencePointList[1] = new Vector3(0f, 90f, 0f);
+        secuencePointList[2] = new Vector3(25f, 20f, 20f);
 
-        myTestQuaternionA = new MyQuaternion(testQuat1);
-        myTestQuaternionB = new MyQuaternion(testQuat2);
+        Vector3Debugger.AddVectorsSecuence(secuencePointList, true, Color.red, "Secuence");
+        Vector3Debugger.EnableEditorView();
     }
 
-
-    void Update()
+    private void Update()
     {
-        myTestQuaternionA = new MyQuaternion(testQuat1);
-        myTestQuaternionB = new MyQuaternion(testQuat2);
+        switch (excersice)
+        {
+            case Excersice.FIRST:
+
+                test1.transform.rotation = test1.transform.rotation * MyQuaternion.Euler(new Vector3(0, angle * Time.deltaTime * speed, 0));
+
+                secuencePointList[1] = test1.transform.forward * 10.0f;
+                secuencePointList[2] = Vector3.zero;
+                secuencePointList[3] = Vector3.zero;
+                secuencePointList[4] = Vector3.zero;
+                break;
+
+            case Excersice.SECOND:
+                break;
+
+            case Excersice.THIRD:
+                break;
+        }
+
+        Vector3Debugger.UpdatePositionsSecuence("Secuence", secuencePointList);
     }
 }
