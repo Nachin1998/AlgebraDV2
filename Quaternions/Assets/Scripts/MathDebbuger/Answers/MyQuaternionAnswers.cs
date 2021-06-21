@@ -42,26 +42,31 @@ public class MyQuaternionAnswers : MonoBehaviour
         switch (excersice)
         {
             case Excersice.FIRST:
-                point1.transform.rotation = point1.transform.rotation * MyQuaternion.Euler(0, angle * Time.deltaTime * speed, 0);
-                
+                point1.transform.rotation *= MyQuaternion.Euler(0, angle * Time.deltaTime * speed, 0);
+
                 secuencePointList[1] = point1.transform.forward * 10f;
                 break;
-            
+
             case Excersice.SECOND:
-                point1.transform.rotation = point1.transform.rotation * MyQuaternion.Euler(0, angle * Time.deltaTime * speed, 0);
+                point1.transform.rotation *= MyQuaternion.Euler(0, angle * Time.deltaTime * speed, 0);
 
                 secuencePointList[1] = point1.transform.forward * 10f;
                 secuencePointList[2] = secuencePointList[1] + (Vector3.up * 10f);
                 secuencePointList[3] = secuencePointList[2] + (point1.transform.forward * 10f);
                 break;
+
+            case Excersice.THIRD:
+                point1.transform.rotation *= Quaternion.Euler(0, angle * Time.deltaTime * speed, angle * Time.deltaTime * speed);
+                point2.transform.rotation *= Quaternion.Euler(0, -angle * Time.deltaTime * speed, -angle * Time.deltaTime * speed);
+
+                secuencePointList[1] = point1.transform.forward * 10f;
+                secuencePointList[2] = secuencePointList[1] + (point1.transform.up * 10f);
+                secuencePointList[3] = secuencePointList[2] + (point2.transform.forward * 10f);
+                secuencePointList[4] = secuencePointList[3] + (point2.transform.up * 10f);
+                break;
         }
 
         Vector3Debugger.UpdatePositionsSecuence("Secuence", secuencePointList);
-    }
-
-    private void ResetShit()
-    {
-        secuencePointList.Clear();
     }
 
     private void SetExcercise(int index)
@@ -96,8 +101,8 @@ public class MyQuaternionAnswers : MonoBehaviour
             secuencePointList.Add(Vector3.zero);
         }
 
-        point1.transform.rotation = MyQuaternion.Euler(new Vector3(0f, 90f, 0f));
-        point2.transform.rotation = MyQuaternion.Euler(new Vector3(0f, 90f, 0f));
+        point1.transform.rotation = MyQuaternion.Euler(0f, 90f, 0f);
+        point2.transform.rotation = MyQuaternion.Euler(0f, 90f, 0f);
     }
 
     private void DoNextExcercise()

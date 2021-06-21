@@ -109,35 +109,9 @@ namespace CustomMath
         //   euler:
         public static MyQuaternion Euler(Vector3 euler)
         {
-            MyQuaternion qX = identity;
-            MyQuaternion qY = identity;
-            MyQuaternion qZ = identity;
-
-            float sin = Mathf.Sin(Mathf.Deg2Rad * euler.x * 0.5f);
-            float cos = Mathf.Cos(Mathf.Deg2Rad * euler.x * 0.5f);
-            qX.Set(sin, 0.0f, 0.0f, cos);
-
-            sin = Mathf.Sin(Mathf.Deg2Rad * euler.y * 0.5f);
-            cos = Mathf.Cos(Mathf.Deg2Rad * euler.y * 0.5f);
-            qY.Set(0.0f, sin, 0.0f, cos);
-
-            sin = Mathf.Sin(Mathf.Deg2Rad * euler.z * 0.5f);
-            cos = Mathf.Cos(Mathf.Deg2Rad * euler.z * 0.5f);
-            qZ.Set(0.0f, 0.0f, sin, cos);
-
-            return new MyQuaternion(qX * qY * qZ);
+            return EulerAngles(euler.x, euler.y, euler.z);
         }
-        //
-        // Resumen:
-        //     Returns a rotation that rotates z degrees around the z axis, x degrees around
-        //     the x axis, and y degrees around the y axis; applied in that order.
-        //
-        // Parámetros:
-        //   x:
-        //
-        //   y:
-        //
-        //   z:
+
         public static MyQuaternion Euler(float x, float y, float z)
         {
             x *= Mathf.Deg2Rad;
