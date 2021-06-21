@@ -132,14 +132,17 @@ namespace CustomMath
         {
             throw new NotImplementedException();
         }
+
         public static MyQuaternion EulerAngles(Vector3 euler)
         {
             throw new NotImplementedException();
         }
+
         public static MyQuaternion EulerRotation(float x, float y, float z)
         {
             throw new NotImplementedException();
         }
+
         public static MyQuaternion EulerRotation(Vector3 euler)
         {
             throw new NotImplementedException();
@@ -255,7 +258,9 @@ namespace CustomMath
         //     A MyQuaternion spherically interpolated between MyQuaternions a and b.
 
         public static MyQuaternion Slerp(MyQuaternion a, MyQuaternion b, float t)
-        { throw new NotImplementedException(); }
+        { 
+            throw new NotImplementedException(); 
+        }
         //
         // Resumen:
         //     Spherically interpolates between a and b by t. The parameter t is not clamped.
@@ -268,9 +273,15 @@ namespace CustomMath
         //   t:
 
         public static MyQuaternion SlerpUnclamped(MyQuaternion a, MyQuaternion b, float t)
-        { throw new NotImplementedException(); }
+        { 
+            throw new NotImplementedException(); 
+        }
+
         public static Vector3 ToEulerAngles(MyQuaternion rotation)
-        { throw new NotImplementedException(); }
+        {
+            throw new NotImplementedException(); 
+        }
+
         public bool Equals(MyQuaternion other)
         {
             return this == other;
@@ -301,19 +312,29 @@ namespace CustomMath
         }
 
         public void SetAxisAngle(Vector3 axis, float angle)
-        { throw new NotImplementedException(); }
+        { 
+            throw new NotImplementedException(); 
+        }
 
         public void SetEulerAngles(Vector3 euler)
-        { throw new NotImplementedException(); }
+        {
+            throw new NotImplementedException(); 
+        }
 
         public void SetEulerAngles(float x, float y, float z)
-        { throw new NotImplementedException(); }
+        { 
+            throw new NotImplementedException(); 
+        }
 
         public void SetEulerRotation(float x, float y, float z)
-        { throw new NotImplementedException(); }
+        { 
+            throw new NotImplementedException(); 
+        }
 
         public void SetEulerRotation(Vector3 euler)
-        { throw new NotImplementedException(); }
+        { 
+            throw new NotImplementedException(); 
+        }
         //
         // Resumen:
         //     Creates a rotation which rotates from fromDirection to toDirection.
@@ -323,7 +344,9 @@ namespace CustomMath
         //
         //   toDirection:
         public void SetFromToRotation(Vector3 fromDirection, Vector3 toDirection)
-        { throw new NotImplementedException(); }
+        { 
+            throw new NotImplementedException(); 
+        }
         //
         // Resumen:
         //     Creates a rotation with the specified forward and upwards directions.
@@ -335,7 +358,9 @@ namespace CustomMath
         //   up:
         //     The vector that defines in which direction up is.
         public void SetLookRotation(Vector3 view, Vector3 up) //el up es un Vector3.up
-        { throw new NotImplementedException(); }
+        { 
+            throw new NotImplementedException();
+        }
         //
         // Resumen:
         //     Creates a rotation with the specified forward and upwards directions.
@@ -348,24 +373,29 @@ namespace CustomMath
         //     The vector that defines in which direction up is.
 
         public void SetLookRotation(Vector3 view)
-        { throw new NotImplementedException(); }
+        {
+            throw new NotImplementedException();
+        }
         public void ToAngleAxis(out float angle, out Vector3 axis)
-        { throw new NotImplementedException(); }
+        { 
+            throw new NotImplementedException(); 
+        }
 
         public void ToAxisAngle(out Vector3 axis, out float angle)
-        { throw new NotImplementedException(); }
+        {
+            throw new NotImplementedException(); 
+        }
 
         public Vector3 ToEuler()
-        { throw new NotImplementedException(); }
+        { 
+            throw new NotImplementedException(); 
+        }
 
         public Vector3 ToEulerAngles()
-        { throw new NotImplementedException(); }
-        //
-        // Resumen:
-        //     Returns a nicely formatted string of the MyQuaternion.
-        //
-        // Parámetros:
-        //   format:
+        {
+            throw new NotImplementedException(); 
+        }
+
         public override string ToString()
         {
             return "(" + x.ToString() + ", " + y.ToString() + ", " + z.ToString() + ", " + w.ToString() + ")";
@@ -400,6 +430,7 @@ namespace CustomMath
             res.z = (xz - wy) * point.x + (yz + wx) * point.y + (1F - (xx + yy)) * point.z;
             return res;
         }
+
         public static MyQuaternion operator *(MyQuaternion lhs, MyQuaternion rhs)
         {
             return new MyQuaternion(
@@ -408,6 +439,7 @@ namespace CustomMath
                   lhs.w * rhs.z + lhs.z * rhs.w + lhs.x * rhs.y - lhs.y * rhs.x,
                   lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z);
         }
+
         public static MyQuaternion operator *(MyQuaternion lhs, Quaternion rhs)
         {
             return new MyQuaternion((lhs.w * rhs.x + lhs.x * rhs.w + lhs.y * rhs.z + lhs.z * rhs.y), 
@@ -415,6 +447,7 @@ namespace CustomMath
                                         (lhs.w * rhs.z + lhs.x * rhs.y - lhs.y * rhs.x + lhs.z * rhs.w), 
                                         (lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z));
         }
+
         public static MyQuaternion operator *(Quaternion lhs, MyQuaternion rhs)
         {
             return new MyQuaternion((lhs.w * rhs.x + lhs.x * rhs.w + lhs.y * rhs.z + lhs.z * rhs.y), 
@@ -422,10 +455,12 @@ namespace CustomMath
                                         (lhs.w * rhs.z + lhs.x * rhs.y - lhs.y * rhs.x + lhs.z * rhs.w), 
                                         (lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z));
         }
+
         public static bool operator ==(MyQuaternion lhs, MyQuaternion rhs)
         {
             return lhs == rhs;
         }
+
         public static bool operator !=(MyQuaternion lhs, MyQuaternion rhs)
         {
             return lhs != rhs;
@@ -435,6 +470,7 @@ namespace CustomMath
         {
             return new Quaternion(q.x, q.y, q.z, q.w);
         }
+
         public static implicit operator MyQuaternion(Quaternion q)
         {
             return new MyQuaternion(q.x, q.y, q.z, q.w);

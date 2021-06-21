@@ -416,8 +416,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   excersice: 0
   secuencePointList: []
-  point1: {fileID: 1763279909}
-  point2: {fileID: 1420887555}
+  point1: {fileID: 1763279913}
+  point2: {fileID: 1420887559}
   speed: 50
   angle: 0
 --- !u!1 &1420887555
