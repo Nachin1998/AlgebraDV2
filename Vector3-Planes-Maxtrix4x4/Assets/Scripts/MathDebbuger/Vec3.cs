@@ -120,6 +120,11 @@ namespace CustomMath
         {
             return new Vector2(v2.x, v2.y);
         }
+
+        public static implicit operator Vec3(Vector3 v3)
+        {
+            return new Vec3(v3.x, v3.y, v3.z);
+        }
         #endregion
 
         #region Functions

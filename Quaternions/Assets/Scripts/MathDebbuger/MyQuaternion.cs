@@ -239,42 +239,64 @@ namespace CustomMath
         {
             throw new NotImplementedException();
         }
-        //
-        // Resumen:
-        //     Spherically interpolates between MyQuaternions a and b by ratio t. The parameter
-        //     t is clamped to the range [0, 1].
-        //
-        // Parámetros:
-        //   a:
-        //     Start value, returned when t = 0.
-        //
-        //   b:
-        //     End value, returned when t = 1.
-        //
-        //   t:
-        //     Interpolation ratio.
-        //
-        // Devuelve:
-        //     A MyQuaternion spherically interpolated between MyQuaternions a and b.
 
         public static MyQuaternion Slerp(MyQuaternion a, MyQuaternion b, float t)
-        { 
-            throw new NotImplementedException(); 
+        {
+            t = Mathf.Clamp(t, 0, 1);
+            return SlerpUnclamped(a, b, t); 
         }
-        //
-        // Resumen:
-        //     Spherically interpolates between a and b by t. The parameter t is not clamped.
-        //
-        // Parámetros:
-        //   a:
-        //
-        //   b:
-        //
-        //   t:
 
         public static MyQuaternion SlerpUnclamped(MyQuaternion a, MyQuaternion b, float t)
-        { 
-            throw new NotImplementedException(); 
+        {
+            float num1;
+            float num2;
+
+            MyQuaternion q;
+            float dot = Dot(a, b);
+            bool neg = false;
+
+            if (dot < 0f)
+            {
+                neg = true;
+                dot = -dot;
+            }
+
+            if (dot >= 1.0f)
+            {
+                num1 = 1.0f - t;
+                num2 = neg ? -t : t;
+                //if (neg)
+                //{
+                //    num2 = -t;
+                //}
+                //else
+                //{
+                //    num2 = t;
+                //}
+            }
+            else
+            {
+                float num3 = (float)Math.Acos(dot);
+                float num4 = (float)(1.0 / Math.Sin(num3));
+
+                num1 = ((float)Math.Sin(((1f - t) * num3))) * num4;
+                num2 = neg ? (((float)-Math.Sin((t * num3))) * num4) : (((float)Math.Sin((t * num3))) * num4);
+
+                //if (neg)
+                //{
+                //    num2 = (((float)-Math.Sin((t * num3))) * num4);
+                //}
+                //else
+                //{
+                //    num2 = (((float)Math.Sin((t * num3))) * num4);
+                //}
+            }
+
+            q.x = ((num1 * a.x) + (num2 * b.x));
+            q.y = ((num1 * a.y) + (num2 * b.y));
+            q.z = ((num1 * a.z) + (num2 * b.z));
+            q.w = ((num1 * a.w) + (num2 * b.w));
+            return q;
         }
 
         public static Vector3 ToEulerAngles(MyQuaternion rotation)

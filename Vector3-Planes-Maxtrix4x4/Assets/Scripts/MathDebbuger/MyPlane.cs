@@ -106,7 +106,7 @@ namespace CustomMath
 
         public bool Equals(Plane other)
         {
-            return (distance == other.distance && normal == other.normal);
+            return distance == other.distance && (Vec3)normal == (Vec3)other.normal;
         }
 
         public bool Equals(MyPlane other)
