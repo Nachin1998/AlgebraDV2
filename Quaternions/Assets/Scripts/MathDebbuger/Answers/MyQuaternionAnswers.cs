@@ -12,19 +12,21 @@ public class MyQuaternionAnswers : MonoBehaviour
         THIRD
     }
     [SerializeField] private Excersice excersice = Excersice.FIRST;
-    [Space]
     [SerializeField] private List<Vector3> secuencePointList = null;
 
-    [SerializeField] private GameObject test1 = null;
-    [SerializeField] private GameObject test2 = null;
+    [Space]
+
+    [SerializeField] private GameObject point1 = null;
+    [SerializeField] private GameObject point2 = null;
 
     [SerializeField] private float speed = 0f;
     [SerializeField] private float angle = 0f;
 
-    void Start()
+    private int pointsInExcersice = 0;
+
+    private void Start()
     {
-        secuencePointList[1] = new Vector3(0f, 90f, 0f);
-        secuencePointList[2] = new Vector3(25f, 20f, 20f);
+        SetExcercise(0);
 
         Vector3Debugger.AddVectorsSecuence(secuencePointList, true, Color.red, "Secuence");
         Vector3Debugger.EnableEditorView();
@@ -32,25 +34,83 @@ public class MyQuaternionAnswers : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            DoNextExcercise();
+        }
+
         switch (excersice)
         {
             case Excersice.FIRST:
-
-                test1.transform.rotation = test1.transform.rotation * MyQuaternion.Euler(new Vector3(0, angle * Time.deltaTime * speed, 0));
-
-                secuencePointList[1] = test1.transform.forward * 10.0f;
-                secuencePointList[2] = Vector3.zero;
-                secuencePointList[3] = Vector3.zero;
-                secuencePointList[4] = Vector3.zero;
+                point1.transform.rotation = point1.transform.rotation * MyQuaternion.Euler(0, angle * Time.deltaTime * speed, 0);
+                
+                secuencePointList[1] = point1.transform.forward * 10f;
                 break;
-
+            
             case Excersice.SECOND:
-                break;
+                point1.transform.rotation = point1.transform.rotation * MyQuaternion.Euler(0, angle * Time.deltaTime * speed, 0);
 
-            case Excersice.THIRD:
+                secuencePointList[1] = point1.transform.forward * 10f;
+                secuencePointList[2] = secuencePointList[1] + (Vector3.up * 10f);
+                secuencePointList[3] = secuencePointList[2] + (point1.transform.forward * 10f);
                 break;
         }
 
         Vector3Debugger.UpdatePositionsSecuence("Secuence", secuencePointList);
+    }
+
+    private void ResetShit()
+    {
+        secuencePointList.Clear();
+    }
+
+    private void SetExcercise(int index)
+    {
+        int maxExcercises = (int)Excersice.THIRD;
+
+        if(index > maxExcercises)
+        {
+            index = 0;
+        }
+
+        excersice = (Excersice)index;
+
+        secuencePointList.Clear();
+        switch (excersice)
+        {
+            case Excersice.FIRST:
+                pointsInExcersice = 2;                
+                break;
+
+            case Excersice.SECOND:
+                pointsInExcersice = 4;
+                break;
+
+            case Excersice.THIRD:
+                pointsInExcersice = 5;
+                break;
+        }
+
+        for (int i = 0; i < pointsInExcersice; i++)
+        {
+            secuencePointList.Add(Vector3.zero);
+        }
+
+        point1.transform.rotation = MyQuaternion.Euler(new Vector3(0f, 90f, 0f));
+        point2.transform.rotation = MyQuaternion.Euler(new Vector3(0f, 90f, 0f));
+    }
+
+    private void DoNextExcercise()
+    {
+        int lastExIndex = (int)Excersice.THIRD;
+        int currentIndex = (int)excersice;
+        currentIndex++;
+
+        if(currentIndex > lastExIndex)
+        {
+            currentIndex = 0;
+        }
+
+        SetExcercise(currentIndex);
     }
 }
