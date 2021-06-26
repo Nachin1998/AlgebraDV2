@@ -28,7 +28,7 @@ public class Tester : MonoBehaviour
         {
             StartCoroutine( UpdateBlueVector());
         }
-
+        
         if (Input.GetKeyDown(KeyCode.O))
         {
             Vector3Debugger.TurnOffVector("elAzul");

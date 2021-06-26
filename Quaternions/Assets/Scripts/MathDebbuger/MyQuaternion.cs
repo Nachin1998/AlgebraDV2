@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CustomMath
@@ -237,7 +239,8 @@ namespace CustomMath
         //   maxDegreesDelta:
         public static MyQuaternion RotateTowards(MyQuaternion from, MyQuaternion to, float maxDegreesDelta)
         {
-            throw new NotImplementedException();
+            float angle = Angle(from, to);
+            return angle == 0f ? to : Lerp(from, to, Mathf.Min(1.0f, maxDegreesDelta / angle));
         }
 
         public static MyQuaternion Slerp(MyQuaternion a, MyQuaternion b, float t)
@@ -265,14 +268,6 @@ namespace CustomMath
             {
                 num1 = 1.0f - t;
                 num2 = neg ? -t : t;
-                //if (neg)
-                //{
-                //    num2 = -t;
-                //}
-                //else
-                //{
-                //    num2 = t;
-                //}
             }
             else
             {
@@ -281,15 +276,6 @@ namespace CustomMath
 
                 num1 = ((float)Math.Sin(((1f - t) * num3))) * num4;
                 num2 = neg ? (((float)-Math.Sin((t * num3))) * num4) : (((float)Math.Sin((t * num3))) * num4);
-
-                //if (neg)
-                //{
-                //    num2 = (((float)-Math.Sin((t * num3))) * num4);
-                //}
-                //else
-                //{
-                //    num2 = (((float)Math.Sin((t * num3))) * num4);
-                //}
             }
 
             q.x = ((num1 * a.x) + (num2 * b.x));
@@ -340,12 +326,16 @@ namespace CustomMath
 
         public void SetEulerAngles(Vector3 euler)
         {
-            throw new NotImplementedException(); 
+            SetEulerAngles(euler.x, euler.y, euler.z);
         }
 
         public void SetEulerAngles(float x, float y, float z)
-        { 
-            throw new NotImplementedException(); 
+        {
+            Vector3 eulerAngles = Vector3.zero;
+            eulerAngles.x = Mathf.Atan2(2 * x * w - 2 *y * z, 1 - 2 * (x * x) - 2 * (z * z)) * Mathf.Rad2Deg;
+            eulerAngles.y = Mathf.Atan2(2 * y * w - 2 *x * z, 1 - 2 * (y * y) - 2 * (z * z)) * Mathf.Rad2Deg;
+            eulerAngles.z = Mathf.Asin(2 * x * y + 2 * z * w) * Mathf.Rad2Deg;
+            this.eulerAngles = eulerAngles;
         }
 
         public void SetEulerRotation(float x, float y, float z)
