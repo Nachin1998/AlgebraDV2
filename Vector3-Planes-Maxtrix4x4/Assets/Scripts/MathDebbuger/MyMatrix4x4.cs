@@ -174,9 +174,6 @@ namespace CustomMath
                     case 15: 
                         m33 = value; 
                         break;
-
-                    default:
-                        throw new IndexOutOfRangeException("Invalid matrix index");
                 }
             }
         }
@@ -220,9 +217,9 @@ namespace CustomMath
         {
             MyMatrix4x4 m = identity;
 
-            m.m00 = vector.x;
-            m.m11 = vector.y;
-            m.m22 = vector.z;
+            m.m00 *= vector.x;
+            m.m11 *= vector.y;
+            m.m22 *= vector.z;
             m.m33 = 1;
 
             return m;
@@ -232,9 +229,9 @@ namespace CustomMath
         {
             MyMatrix4x4 m = identity;
 
-            m.m03 = vector.x;
-            m.m13 = vector.y;
-            m.m23 = vector.z;
+            m.m03 += vector.x;
+            m.m13 += vector.y;
+            m.m23 += vector.z;
             m.m33 = 1;
             return m;
         }
@@ -277,10 +274,7 @@ namespace CustomMath
 
         public void SetTRS(Vec3 pos, Quaternion q, Vec3 s)
         {
-            Translate(pos);
-            Rotate(q);
-            Scale(s);
-            TRS(pos, q, s);
+            this = TRS(pos, q, s);
         }
 
         public override string ToString()
