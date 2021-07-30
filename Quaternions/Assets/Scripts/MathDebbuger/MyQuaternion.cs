@@ -135,38 +135,6 @@ namespace CustomMath
             throw new NotImplementedException();
         }
 
-        public static MyQuaternion EulerAngles(Vector3 euler)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static MyQuaternion EulerRotation(float x, float y, float z)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static MyQuaternion EulerRotation(Vector3 euler)
-        {
-            throw new NotImplementedException();
-        }
-        //
-        // Resumen:
-        //     Creates a rotation which rotates from fromDirection to toDirection.
-        //
-        // Parámetros:
-        //   fromDirection:
-        //
-        //   toDirection:
-        public static MyQuaternion FromToRotation(Vector3 fromDirection, Vector3 toDirection)
-        {
-            throw new NotImplementedException();
-        }
-        //
-        // Resumen:
-        //     Returns the Inverse of rotation.
-        //
-        // Parámetros:
-        //   rotation:
         public static MyQuaternion Inverse(MyQuaternion rotation)
         {
             return new MyQuaternion(-rotation.x, -rotation.y, -rotation.z, rotation.w);
@@ -185,43 +153,7 @@ namespace CustomMath
 
             return new MyQuaternion(a.x + differenceLerped.x, a.y + differenceLerped.y, a.z + differenceLerped.z, a.w + differenceLerped.w).normalized;
         }
-        //
-        // Resumen:
-        //     Creates a rotation with the specified forward and upwards directions.
-        //
-        // Parámetros:
-        //   forward:
-        //     The direction to look in.
-        //
-        //   upwards:
-        //     The vector that defines in which direction up is.
 
-        public static MyQuaternion LookRotation(Vector3 forward)
-        {
-            throw new NotImplementedException();
-        }
-        //
-        // Resumen:
-        //     Creates a rotation with the specified forward and upwards directions.
-        //
-        // Parámetros:
-        //   forward:
-        //     The direction to look in.
-        //
-        //   upwards:
-        //     The vector that defines in which direction up is.
-
-        public static MyQuaternion LookRotation(Vector3 forward, Vector3 upwards) //Vector3 up
-        {
-            throw new NotImplementedException();
-        }
-        //
-        // Resumen:
-        //     Converts this MyQuaternion to one with the same orientation but with a magnitude
-        //     of 1.
-        //
-        // Parámetros:
-        //   q:
         public static MyQuaternion Normalize(MyQuaternion q)
         {
             float mag = Mathf.Sqrt(Dot(q, q));
@@ -285,10 +217,6 @@ namespace CustomMath
             return q;
         }
 
-        public static Vector3 ToEulerAngles(MyQuaternion rotation)
-        {
-            throw new NotImplementedException(); 
-        }
 
         public bool Equals(MyQuaternion other)
         {
@@ -299,11 +227,6 @@ namespace CustomMath
         {
             if (!(other is MyQuaternion)) return false;
             return Equals((MyQuaternion)other);
-        }
-
-        public bool Equals(Quaternion other)
-        {
-            throw new NotImplementedException();
         }
 
         public void Normalize()
@@ -317,11 +240,6 @@ namespace CustomMath
             y = newY;
             z = newZ;
             w = newW;
-        }
-
-        public void SetAxisAngle(Vector3 axis, float angle)
-        { 
-            throw new NotImplementedException(); 
         }
 
         public void SetEulerAngles(Vector3 euler)
@@ -338,74 +256,13 @@ namespace CustomMath
             this.eulerAngles = eulerAngles;
         }
 
-        public void SetEulerRotation(float x, float y, float z)
-        { 
-            throw new NotImplementedException(); 
-        }
-
-        public void SetEulerRotation(Vector3 euler)
-        { 
-            throw new NotImplementedException(); 
-        }
-        //
-        // Resumen:
-        //     Creates a rotation which rotates from fromDirection to toDirection.
-        //
-        // Parámetros:
-        //   fromDirection:
-        //
-        //   toDirection:
-        public void SetFromToRotation(Vector3 fromDirection, Vector3 toDirection)
-        { 
-            throw new NotImplementedException(); 
-        }
-        //
-        // Resumen:
-        //     Creates a rotation with the specified forward and upwards directions.
-        //
-        // Parámetros:
-        //   view:
-        //     The direction to look in.
-        //
-        //   up:
-        //     The vector that defines in which direction up is.
-        public void SetLookRotation(Vector3 view, Vector3 up) //el up es un Vector3.up
-        { 
-            throw new NotImplementedException();
-        }
-        //
-        // Resumen:
-        //     Creates a rotation with the specified forward and upwards directions.
-        //
-        // Parámetros:
-        //   view:
-        //     The direction to look in.
-        //
-        //   up:
-        //     The vector that defines in which direction up is.
-
-        public void SetLookRotation(Vector3 view)
-        {
-            throw new NotImplementedException();
-        }
-        public void ToAngleAxis(out float angle, out Vector3 axis)
-        { 
-            throw new NotImplementedException(); 
-        }
-
-        public void ToAxisAngle(out Vector3 axis, out float angle)
-        {
-            throw new NotImplementedException(); 
-        }
-
         public Vector3 ToEuler()
-        { 
-            throw new NotImplementedException(); 
-        }
-
-        public Vector3 ToEulerAngles()
         {
-            throw new NotImplementedException(); 
+            Vector3 a = Vector3.zero;
+            a.x = Mathf.Atan2(2 * x * w - 2 * y * z, 1 - 2 * (x * x) - 2 * (z * z)) * Mathf.Rad2Deg;
+            a.y = Mathf.Atan2(2 * y * w - 2 * x * z, 1 - 2 * (y * y) - 2 * (z * z)) * Mathf.Rad2Deg;
+            a.z = Mathf.Asin(2 * x * y + 2 * z * w) * Mathf.Rad2Deg;
+            return a;
         }
 
         public override string ToString()
@@ -463,9 +320,9 @@ namespace CustomMath
         public static MyQuaternion operator *(Quaternion lhs, MyQuaternion rhs)
         {
             return new MyQuaternion((lhs.w * rhs.x + lhs.x * rhs.w + lhs.y * rhs.z + lhs.z * rhs.y), 
-                                        (lhs.w * rhs.y - lhs.x * rhs.z + lhs.y * rhs.w + lhs.z * rhs.x), 
-                                        (lhs.w * rhs.z + lhs.x * rhs.y - lhs.y * rhs.x + lhs.z * rhs.w), 
-                                        (lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z));
+                                    (lhs.w * rhs.y - lhs.x * rhs.z + lhs.y * rhs.w + lhs.z * rhs.x), 
+                                    (lhs.w * rhs.z + lhs.x * rhs.y - lhs.y * rhs.x + lhs.z * rhs.w), 
+                                    (lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z));
         }
 
         public static bool operator ==(MyQuaternion lhs, MyQuaternion rhs)
