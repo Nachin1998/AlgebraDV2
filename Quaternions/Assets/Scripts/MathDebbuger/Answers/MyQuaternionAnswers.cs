@@ -44,8 +44,6 @@ public class MyQuaternionAnswers : MonoBehaviour
             DoNextExcercise();
         }
 
-
-
         switch (excersice)
         {
             case Excersice.FIRST:
@@ -124,7 +122,5 @@ public class MyQuaternionAnswers : MonoBehaviour
 
         point1.rotation = MyQuaternion.Euler(0f, 90f, 0f);
         point2.rotation = MyQuaternion.Euler(0f, 90f, 0f);
-    }
-
-    
+    }    
 }

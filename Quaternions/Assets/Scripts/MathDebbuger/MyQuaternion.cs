@@ -111,7 +111,7 @@ namespace CustomMath
         //   euler:
         public static MyQuaternion Euler(Vector3 euler)
         {
-            return EulerAngles(euler.x, euler.y, euler.z);
+            return Euler(euler.x, euler.y, euler.z);
         }
 
         public static MyQuaternion Euler(float x, float y, float z)
@@ -128,11 +128,6 @@ namespace CustomMath
                   Mathf.Sin(x * 0.5f) * Mathf.Sin(y * 0.5f) * Mathf.Sin(z * 0.5f);
             q.Normalize();
             return q;
-        }
-
-        public static MyQuaternion EulerAngles(float x, float y, float z)
-        {
-            throw new NotImplementedException();
         }
 
         public static MyQuaternion Inverse(MyQuaternion rotation)
